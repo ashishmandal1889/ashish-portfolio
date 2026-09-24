@@ -1,0 +1,114 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  color: #fff;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+}
+
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Sections don't hide behind fixed navbar */
+section {
+  scroll-margin-top: 80px;
+}
+
+/* =========================
+   DESKTOP NAVBAR
+========================= */
+
+.desktop-menu a,
+.mobile-menu a {
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.desktop-menu a:hover,
+.mobile-menu a:hover {
+  color: #22d3ee;
+}
+
+/* Mobile menu button */
+.mobile-nav-button {
+  background: none;
+  border: none;
+  color: white;
+  text-align: left;
+  font-size: 17px;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.mobile-nav-button:hover {
+  color: #22d3ee;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+.menu-button {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  /* NAVBAR */
+
+  nav {
+    padding: 18px 20px !important;
+  }
+
+  .desktop-menu {
+    display: none !important;
+  }
+
+  .menu-button {
+    display: block !important;
+  }
+
+  /* HERO */
+
+  .hero-section {
+    padding: 100px 20px 60px !important;
+  }
+
+  .hero-section h1 {
+    font-size: 48px !important;
+  }
+
+  .hero-section h2 {
+    font-size: 26px !important;
+  }
+
+  .hero-description {
+    font-size: 16px !important;
+    line-height: 1.6 !important;
+    max-width: 350px !important;
+  }
+
+  .hero-buttons {
+    flex-direction: column !important;
+    width: 100%;
+    align-items: center;
+  }
+
+  .hero-buttons a {
+    width: 90%;
+    max-width: 280px;
+    text-align: center;
+  }
+}

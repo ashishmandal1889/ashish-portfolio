@@ -1,0 +1,285 @@
+/* ===== GLOBAL APP ===== */
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
+}
+
+.app {
+  width: 100%;
+  min-height: 100vh;
+  background: #000;
+}
+
+/* ===== NAVBAR ===== */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background: #111;
+  border-bottom: 1px solid #222;
+}
+
+.navbar-container {
+  max-width: 1100px;
+  margin: auto;
+  padding: 20px 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.logo span {
+  color: #22d3ee;
+}
+
+.nav-links {
+  display: flex;
+  gap: 30px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.nav-links a:hover {
+  color: #22d3ee;
+}
+
+/* ===== HERO ===== */
+
+.hero {
+  min-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 40px 20px;
+  background: #000;
+}
+
+.hero-intro {
+  color: #22d3ee;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.hero h1 {
+  color: white;
+  font-size: clamp(50px, 8vw, 90px);
+  margin: 0;
+}
+
+.hero h2 {
+  color: #9ca3af;
+  font-size: 32px;
+  font-weight: 400;
+  margin: 25px 0;
+}
+
+.hero p {
+  max-width: 750px;
+  color: #9ca3af;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 35px;
+}
+
+.hero-buttons a {
+  padding: 13px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.primary-button {
+  background: #22d3ee;
+  color: #000;
+}
+
+.secondary-button {
+  border: 1px solid #444;
+  color: white;
+}
+
+/* ===== SECTIONS ===== */
+
+section {
+  width: 100%;
+  background: #000;
+}
+
+.about-section,
+.skills-section {
+  min-height: 80vh;
+  padding: 100px 8%;
+}
+
+.section-label {
+  color: #22d3ee;
+  font-size: 18px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.section-title {
+  color: white;
+  font-size: 52px;
+  text-align: center;
+  margin: 0 0 25px;
+}
+
+.section-text {
+  max-width: 750px;
+  margin: auto;
+  color: #9ca3af;
+  line-height: 1.8;
+  text-align: center;
+}
+
+/* ===== PROJECTS ===== */
+
+.projects-section {
+  min-height: 100vh;
+  padding: 100px 8%;
+  background: #000;
+}
+
+.projects-title {
+  color: white;
+  font-size: 52px;
+  text-align: center;
+  margin: 0 0 20px;
+}
+
+.projects-subtitle {
+  max-width: 750px;
+  margin: 0 auto 60px;
+  color: #9ca3af;
+  font-size: 18px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.projects-grid {
+  max-width: 1100px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+}
+
+.project-card {
+  min-height: 330px;
+  padding: 32px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  background: #090909;
+  border: 1px solid #27272a;
+  border-radius: 18px;
+
+  text-align: left;
+}
+
+.project-card:hover {
+  border-color: #22d3ee;
+}
+
+.project-card h3 {
+  color: white;
+  font-size: 28px;
+  margin: 0 0 18px;
+}
+
+.project-card p {
+  color: #9ca3af;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.tech-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.tech-list span {
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #111827;
+  color: #67e8f9;
+  font-size: 13px;
+}
+
+.github-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  width: fit-content;
+  margin-top: 30px;
+  padding: 11px 17px;
+
+  background: #22d3ee;
+  color: #000;
+  border-radius: 8px;
+
+  text-decoration: none;
+  font-weight: 600;
+}
+
+/* ===== MOBILE ===== */
+
+@media (max-width: 768px) {
+  .navbar-container {
+    padding: 18px 20px;
+  }
+
+  .nav-links {
+    gap: 15px;
+  }
+
+  .hero h1 {
+    font-size: 50px;
+  }
+
+  .hero h2 {
+    font-size: 25px;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-title,
+  .section-title {
+    font-size: 40px;
+  }
+}
