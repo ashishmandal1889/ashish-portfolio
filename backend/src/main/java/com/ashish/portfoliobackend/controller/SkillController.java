@@ -25,4 +25,19 @@ public class SkillController {
     public Skill createSkill(@RequestBody Skill skill) {
         return skillRepository.save(skill);
     }
+    @PutMapping("/{id}")
+     public Skill updateSkill(@PathVariable Long id, @RequestBody Skill skill) {
+
+        Skill existingSkill = skillRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Skill not found"));
+
+        existingSkill.setName(skill.getName());
+
+        return skillRepository.save(existingSkill);
+    }
+    @DeleteMapping("/{id}")
+        public void deleteSkill(@PathVariable Long id) {
+        skillRepository.deleteById(id);
+    }
+
 }

@@ -1,18 +1,25 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 function Skills() {
-  const skills = [
-    "Java",
-    "Spring Boot",
-    "React",
-    "JavaScript",
-    "SQL",
-    "PostgreSQL",
-    "Git & GitHub",
-    "Docker",
-    "AWS",
-    "DSA",
-  ];
+  const [skills, setSkills] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/skills")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to fetch skills");
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        setSkills(data);
+      })
+      .catch((error) => {
+        console.error("Error fetching skills:", error);
+      });
+  }, []);
 
   return (
     <section
@@ -71,7 +78,7 @@ function Skills() {
         >
           {skills.map((skill, index) => (
             <motion.div
-              key={skill}
+              key={skill.id}
               initial={{
                 opacity: 0,
                 y: 30,
@@ -92,7 +99,8 @@ function Skills() {
                 y: -8,
                 scale: 1.04,
                 borderColor: "#22d3ee",
-                boxShadow: "0 0 20px rgba(34, 211, 238, 0.15)",
+                boxShadow:
+                  "0 0 20px rgba(34, 211, 238, 0.15)",
               }}
               whileTap={{
                 scale: 0.97,
@@ -108,7 +116,7 @@ function Skills() {
                 transition: "border-color 0.3s ease",
               }}
             >
-              {skill}
+              {skill.name}
             </motion.div>
           ))}
         </div>
