@@ -32,47 +32,89 @@ public class SecurityConfig {
     ) throws Exception {
 
         http
-                // Disable CSRF for stateless JWT authentication
                 .csrf(csrf -> csrf.disable())
 
-                // Configure CORS
                 .cors(cors -> cors.configurationSource(
                         corsConfigurationSource()
                 ))
 
-                // Use stateless session management
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS
                         )
                 )
 
-                // Configure endpoint authorization
                 .authorizeHttpRequests(auth -> auth
 
-                        // Login is public
+                        // Public login
                         .requestMatchers(
                                 "/api/auth/login"
                         ).permitAll()
 
-                        // Allow Spring Boot error handling
+                        // Public error handling
                         .requestMatchers(
                                 "/error"
                         ).permitAll()
 
+                        
                         // Public GET requests
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/projects/**",
                                 "/api/about/**",
-                                "/api/skills/**"
+                                "/api/skills/**",
+                                "/api/credentials/**",
+                                "/api/experiences/**"
                         ).permitAll()
 
-                        // All other requests require authentication
+                        // Explicit public Education GET requests
+                        .requestMatchers(
+                                HttpMethod.GET,
+                                "/api/education",
+                                "/api/education/**"
+                        ).permitAll()
+
+
+                        // Admin-only POST requests
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/projects/**",
+                                "/api/about/**",
+                                "/api/skills/**",
+                                "/api/credentials/**",
+                                "/api/experiences/**",
+                                "/api/education",
+                                "/api/education/**"
+                        ).hasRole("ADMIN")
+
+                        // Admin-only PUT requests
+                        .requestMatchers(
+                                HttpMethod.PUT,
+                                "/api/projects/**",
+                                "/api/about/**",
+                                "/api/skills/**",
+                                "/api/credentials/**",
+                                "/api/experiences/**",
+                                "/api/education",
+                                "/api/education/**"
+                        ).hasRole("ADMIN")
+
+                        // Admin-only DELETE requests
+                        .requestMatchers(
+                                HttpMethod.DELETE,
+                                "/api/projects/**",
+                                "/api/about/**",
+                                "/api/skills/**",
+                                "/api/credentials/**",
+                                "/api/experiences/**",
+                                "/api/education",
+                                "/api/education/**"
+                        ).hasRole("ADMIN")
+
+                        // Everything else requires authentication
                         .anyRequest().authenticated()
                 )
 
-                // Add JWT filter before username/password filter
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
@@ -81,8 +123,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Disable automatic servlet registration
-    // to prevent duplicate JWT filter execution
     @Bean
     public FilterRegistrationBean<JwtAuthenticationFilter>
     jwtFilterRegistration(
@@ -96,7 +136,6 @@ public class SecurityConfig {
         return registration;
     }
 
-    // Configure CORS settings
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 

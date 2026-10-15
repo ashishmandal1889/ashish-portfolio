@@ -1,12 +1,18 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { motion } from "framer-motion";
+
 import Navbar from "./components/Navbar";
 import About from "./components/About";
 import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import Admin from "./components/Admin";
-function App() {
+
+import AdminLogin from "./admin/AdminLogin";
+import AdminDashboard from "./admin/AdminDashboard";
+
+
+function Portfolio() {
   return (
     <div
       style={{
@@ -19,7 +25,7 @@ function App() {
 
       {/* HERO SECTION */}
       <section
-      id="home"
+        id="home"
         className="hero-section"
         style={{
           minHeight: "100vh",
@@ -84,7 +90,7 @@ function App() {
 
         {/* DESCRIPTION */}
         <motion.p
-         className="hero-description"
+          className="hero-description"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
@@ -106,7 +112,7 @@ function App() {
 
         {/* BUTTONS */}
         <motion.div
-         className="hero-buttons"
+          className="hero-buttons"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
@@ -175,15 +181,44 @@ function App() {
 
       {/* PROJECTS */}
       <Projects />
+
       {/* CONTACT */}
       <Contact />
+
       {/* FOOTER */}
       <Footer />
-      
-      <Admin />
     </div>
   );
 }
-  
+
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+
+        {/* PUBLIC PORTFOLIO */}
+        <Route
+          path="/"
+          element={<Portfolio />}
+        />
+
+        {/* ADMIN LOGIN */}
+        <Route
+          path="/admin/login"
+          element={<AdminLogin />}
+        />
+
+        {/* ADMIN DASHBOARD */}
+        <Route
+          path="/admin/dashboard"
+          element={<AdminDashboard />}
+        />
+
+      </Routes>
+    </BrowserRouter>
+  );
+}
+
 
 export default App;
