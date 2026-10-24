@@ -1,7 +1,8 @@
 
 import { useEffect, useState } from "react";
+import { apiUrl } from "../config/api";
 
-const API_URL = "http://localhost:8080/api/experiences";
+const API_URL = apiUrl("/api/experiences");
 
 const emptyForm = {
   company: "",

@@ -1,7 +1,9 @@
+
 package com.ashish.portfoliobackend.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -11,30 +13,38 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    // Development secret key
-    private static final String SECRET_KEY =
-            "AshishPortfolioJwtSecretKey2026ForDevelopmentOnly123456";
-
-    // Token will expire after 24 hours
-    private static final long EXPIRATION_TIME =
-            1000 * 60 * 60 * 24;
-
     private final SecretKey key;
 
-    public JwtService() {
-        this.key = Keys.hmacShaKeyFor(
-                SECRET_KEY.getBytes(StandardCharsets.UTF_8)
-        );
+    // Read the JWT signing secret from an environment variable.
+    public JwtService(@Value("${JWT_SECRET}") String secret) {
+        if (secret == null || secret.isBlank()) {
+            throw new IllegalStateException(
+                    "JWT_SECRET environment variable must be configured"
+            );
+        }
+
+        byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
+
+        // HS256 requires a key of at least 32 bytes.
+        if (secretBytes.length < 32) {
+            throw new IllegalStateException(
+                    "JWT_SECRET must contain at least 32 bytes"
+            );
+        }
+
+        this.key = Keys.hmacShaKeyFor(secretBytes);
     }
 
-    // Generate JWT token after successful login
+    // Generate a JWT that expires after 24 hours.
     public String generateToken(String username) {
+        if (username == null || username.isBlank()) {
+            throw new IllegalArgumentException(
+                    "Username must not be blank"
+            );
+        }
 
         Date now = new Date();
-
-        Date expiration = new Date(
-                now.getTime() + EXPIRATION_TIME
-        );
+        Date expiration = new Date(now.getTime() + 24L * 60 * 60 * 1000);
 
         return Jwts.builder()
                 .subject(username)
@@ -44,9 +54,8 @@ public class JwtService {
                 .compact();
     }
 
-    // Get username from JWT token
+    // Verify the signature and extract the username.
     public String extractUsername(String token) {
-
         return Jwts.parser()
                 .verifyWith(key)
                 .build()
@@ -55,20 +64,21 @@ public class JwtService {
                 .getSubject();
     }
 
-    // Check whether JWT token is valid
+    // Invalid signatures, expired tokens, and malformed tokens are rejected.
     public boolean isTokenValid(String token) {
+        if (token == null || token.isBlank()) {
+            return false;
+        }
 
         try {
-
             Jwts.parser()
                     .verifyWith(key)
                     .build()
                     .parseSignedClaims(token);
 
             return true;
-
-        } catch (Exception e) {
-
+        } catch (io.jsonwebtoken.JwtException
+                 | IllegalArgumentException ex) {
             return false;
         }
     }

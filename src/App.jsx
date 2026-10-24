@@ -1,5 +1,6 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import "./App.css";
 
 import Navbar from "./components/Navbar";
 import About from "./components/About";
@@ -7,49 +8,50 @@ import Skills from "./components/Skills";
 import Projects from "./components/Projects";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import Experience from "./components/Experience";
 
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
+import Education from "./components/Education";
+import Credentials from "./components/Credentials";
+import ProtectedRoute from "./admin/ProtectedRoute";
 
 
 function Portfolio() {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "#000",
-        color: "#fff",
-      }}
-    >
+    <div className="portfolio-shell">
       <Navbar />
 
       {/* HERO SECTION */}
       <section
         id="home"
-        className="hero-section"
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "100px 20px 60px",
-          boxSizing: "border-box",
-          textAlign: "center",
-        }}
+        className="hero-section hero-section--premium"
       >
+        <div className="hero-orb hero-orb--one" aria-hidden="true" />
+        <div className="hero-orb hero-orb--two" aria-hidden="true" />
+        <div className="hero-grid" aria-hidden="true" />
+        <div className="hero-content">
+        <motion.div
+          className="hero-profile"
+          initial={{ opacity: 0, scale: 0.88, y: -12 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.05 }}
+        >
+          <img
+            src="/WhatsApp Image 2026-09-27 at 11.56.01.jpeg"
+            alt="Ashish Kumar"
+            width="180"
+            height="180"
+          />
+        </motion.div>
         {/* HELLO */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          style={{
-            color: "#22d3ee",
-            fontSize: "20px",
-            marginBottom: "10px",
-          }}
+          className="hero-eyebrow"
         >
-          Hello, I'm
+          <span className="status-dot" /> Available for opportunities
         </motion.p>
 
         {/* NAME */}
@@ -60,12 +62,7 @@ function Portfolio() {
             duration: 0.8,
             delay: 0.15,
           }}
-          style={{
-            fontSize: "clamp(50px, 9vw, 90px)",
-            margin: "10px 0",
-            fontWeight: "700",
-            lineHeight: "1.1",
-          }}
+          className="hero-title"
         >
           Ashish Kumar
         </motion.h1>
@@ -85,12 +82,12 @@ function Portfolio() {
             margin: "15px 0",
           }}
         >
-          Software Engineer
+          Software Engineer <span>&amp;</span> AI/ML Builder
         </motion.h2>
 
         {/* DESCRIPTION */}
         <motion.p
-          className="hero-description"
+          className="hero-description hero-description--premium"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{
@@ -105,26 +102,18 @@ function Portfolio() {
             marginTop: "15px",
           }}
         >
-          I build scalable web applications and backend systems using
-          Java, Spring Boot, React, PostgreSQL and modern cloud
-          technologies.
+          I design reliable software and intelligent experiences—from scalable
+          web platforms to practical AI/ML solutions that solve real problems.
         </motion.p>
 
         {/* BUTTONS */}
         <motion.div
-          className="hero-buttons"
+          className="hero-buttons hero-buttons--premium"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{
             duration: 0.7,
             delay: 0.7,
-          }}
-          style={{
-            display: "flex",
-            gap: "15px",
-            marginTop: "35px",
-            flexWrap: "wrap",
-            justifyContent: "center",
           }}
         >
           {/* PROJECT BUTTON */}
@@ -136,14 +125,7 @@ function Portfolio() {
             whileTap={{
               scale: 0.95,
             }}
-            style={{
-              background: "#22d3ee",
-              color: "#000",
-              padding: "13px 25px",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontWeight: "600",
-            }}
+            className="button button--primary"
           >
             View My Projects
           </motion.a>
@@ -159,28 +141,30 @@ function Portfolio() {
             whileTap={{
               scale: 0.95,
             }}
-            style={{
-              border: "1px solid #333",
-              color: "#fff",
-              padding: "13px 25px",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontWeight: "600",
-            }}
+            className="button button--secondary"
           >
             Contact Me
           </motion.a>
         </motion.div>
+        </div>
       </section>
 
       {/* ABOUT */}
-      <About />
+     <About />
+
+    {/* EDUCATION */}
+      <Education />
+
+      {/* ACHIEVEMENTS & CERTIFICATIONS */}
+      <Credentials />
 
       {/* SKILLS */}
       <Skills />
 
       {/* PROJECTS */}
       <Projects />
+      {/* EXPERIENCE */}
+       <Experience />
 
       {/* CONTACT */}
       <Contact />
@@ -192,33 +176,33 @@ function Portfolio() {
 }
 
 
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public portfolio */}
+        <Route path="/" element={<Portfolio />} />
 
-        {/* PUBLIC PORTFOLIO */}
+        {/* Admin login */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+
+        {/* Protected admin pages */}
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/admin/dashboard"
+            element={<AdminDashboard />}
+          />
+        </Route>
+
+        {/* Redirect unknown routes */}
         <Route
-          path="/"
-          element={<Portfolio />}
+          path="*"
+          element={<Navigate to="/" replace />}
         />
-
-        {/* ADMIN LOGIN */}
-        <Route
-          path="/admin/login"
-          element={<AdminLogin />}
-        />
-
-        {/* ADMIN DASHBOARD */}
-        <Route
-          path="/admin/dashboard"
-          element={<AdminDashboard />}
-        />
-
       </Routes>
     </BrowserRouter>
   );
 }
-
 
 export default App;

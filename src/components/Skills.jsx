@@ -1,11 +1,20 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { apiUrl } from "../config/api";
+
+const resumeSkills = [
+  "Python", "Java", "JavaScript", "SQL", "Data Structures & Algorithms",
+  "Machine Learning", "Deep Learning", "NumPy", "Pandas", "scikit-learn",
+  "LLMs", "Gemini API", "OpenAI API", "Prompt Engineering", "Agentic AI",
+  "React", "Node.js", "Express.js", "FastAPI", "REST APIs", "PostgreSQL",
+  "MySQL", "MongoDB", "Firebase", "Docker", "GitHub Actions",
+].map((name) => ({ id: name, name }));
 
 function Skills() {
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState(resumeSkills);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/skills")
+    fetch(apiUrl("/api/skills"))
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch skills");
@@ -14,7 +23,7 @@ function Skills() {
         return response.json();
       })
       .then((data) => {
-        setSkills(data);
+        setSkills(Array.isArray(data) && data.length ? data : resumeSkills);
       })
       .catch((error) => {
         console.error("Error fetching skills:", error);

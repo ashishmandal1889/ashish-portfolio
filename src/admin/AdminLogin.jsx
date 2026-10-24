@@ -8,8 +8,9 @@ import {
 } from "lucide-react";
 
 import "./AdminLogin.css";
+import { apiUrl } from "../config/api";
 
-const API_URL = "http://localhost:8080/api/auth/login";
+const API_URL = apiUrl("/api/auth/login");
 
 function AdminLogin() {
   const navigate = useNavigate();

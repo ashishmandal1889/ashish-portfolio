@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { apiUrl } from "../config/api";
 
-const API_URL = "http://localhost:8080/api/about";
+const API_URL = apiUrl("/api/about");
 
 function AboutManager() {
   const [about, setAbout] = useState(null);

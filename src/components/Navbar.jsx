@@ -14,7 +14,15 @@ function Navbar() {
     }, 100);
   };
 
-  const links = ["Home", "About", "Skills", "Projects", "Contact"];
+  const links = [
+    "Home",
+    "About",
+    "Education",
+    "Skills",
+    "Projects",
+    "Credentials",
+    "Contact",
+  ];
 
   return (
     <motion.nav
@@ -75,9 +83,24 @@ function Navbar() {
           </motion.a>
         ))}
 
+        <motion.a
+          href="/admin/login"
+          whileHover={{
+            y: -2,
+            color: "#22d3ee",
+          }}
+          transition={{ duration: 0.2 }}
+          style={{
+            color: "#9ca3af",
+            textDecoration: "none",
+          }}
+        >
+          Admin
+        </motion.a>
+
         {/* DESKTOP RESUME */}
         <motion.a
-          href="/resume.pdf"
+          href="/Resume.pdf"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{
@@ -155,9 +178,21 @@ function Navbar() {
               </motion.button>
             ))}
 
+            <motion.a
+              href="/admin/login"
+              className="mobile-nav-button"
+              whileHover={{
+                x: 5,
+                color: "#22d3ee",
+              }}
+              style={{ textDecoration: "none" }}
+            >
+              Admin Login
+            </motion.a>
+
             {/* MOBILE RESUME */}
             <motion.a
-              href="/resume.pdf"
+              href="/Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="mobile-nav-button"

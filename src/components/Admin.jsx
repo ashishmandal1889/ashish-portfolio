@@ -1,7 +1,8 @@
 
 import { useEffect, useRef, useState } from "react";
+import { apiUrl } from "../config/api";
 
-const API_BASE = "http://localhost:8080/api";
+const API_BASE = apiUrl("/api");
 
 const styles = {
   page: {

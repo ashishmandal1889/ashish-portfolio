@@ -1,6 +1,63 @@
+
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { apiUrl } from "../config/api";
+
+const API_URL = apiUrl("/api/contact");
+const resumeContact = {
+  email: "ashishmandal1889@gmail.com", phone: "+91-9113458404", location: "Bengaluru, Karnataka",
+  github: "https://github.com/ashishmandal1889", linkedIn: "https://www.linkedin.com/in/ashish-kumar-a802192a0/",
+};
 
 function Contact() {
+  const [contact, setContact] = useState(resumeContact);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchContact() {
+      try {
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+          throw new Error("Failed to load contact information");
+        }
+
+        const data = await response.json();
+        setContact(Array.isArray(data) ? data[0] ?? resumeContact : data ?? resumeContact);
+      } catch (error) {
+        console.error("Unable to load contact information:", error);
+        setContact(resumeContact);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchContact();
+  }, []);
+
+  const email = contact?.email || "";
+  const phone = contact?.phone || "";
+  const github = contact?.github || "";
+  const linkedIn = contact?.linkedIn || "";
+  const leetCode = contact?.leetCode || "";
+  const location = contact?.location || "";
+
+  const buttonStyle = {
+    border: "1px solid #333",
+    color: "#fff",
+    padding: "13px 25px",
+    borderRadius: "8px",
+    textDecoration: "none",
+    fontWeight: "600",
+  };
+
+  const socialLinks = [
+    { label: "GitHub", url: github },
+    { label: "LinkedIn", url: linkedIn },
+    { label: "LeetCode", url: leetCode },
+    { label: "Website", url: contact?.website || "" },
+  ].filter((item) => item.url);
+
   return (
     <section
       id="contact"
@@ -22,7 +79,6 @@ function Contact() {
           textAlign: "center",
         }}
       >
-        {/* LABEL */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -37,7 +93,6 @@ function Contact() {
           Get In Touch
         </motion.p>
 
-        {/* TITLE */}
         <motion.h2
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -51,7 +106,6 @@ function Contact() {
           Let's Work Together
         </motion.h2>
 
-        {/* DESCRIPTION */}
         <motion.p
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -70,108 +124,112 @@ function Contact() {
           opportunity, or just connect, feel free to reach out.
         </motion.p>
 
-        {/* EMAIL ADDRESS */}
-        <motion.a
-          href="mailto:ashishmandal1889@gmail.com"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.25 }}
-          whileHover={{
-            color: "#22d3ee",
-            scale: 1.03,
-          }}
-          style={{
-            display: "inline-block",
-            marginTop: "25px",
-            color: "#9ca3af",
-            fontSize: "17px",
-            textDecoration: "none",
-          }}
-        >
-          ashishmandal1889@gmail.com
-        </motion.a>
+        {loading ? (
+          <p style={{ color: "#9ca3af", marginTop: "25px" }}>
+            Loading contact information...
+          </p>
+        ) : (
+          <>
+            {location && (
+              <p style={{ color: "#9ca3af", marginTop: "20px" }}>
+                {location}
+              </p>
+            )}
 
-        {/* CONTACT BUTTONS */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.35 }}
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            flexWrap: "wrap",
-            gap: "15px",
-            marginTop: "40px",
-          }}
-        >
-          {/* EMAIL */}
-          <motion.a
-            href="mailto:ashishmandal1889@gmail.com"
-            whileHover={{
-              scale: 1.05,
-              boxShadow: "0 0 20px rgba(34, 211, 238, 0.3)",
-            }}
-            whileTap={{ scale: 0.95 }}
-            style={{
-              background: "#22d3ee",
-              color: "#000",
-              padding: "13px 25px",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontWeight: "600",
-            }}
-          >
-            Email Me
-          </motion.a>
+            {email && (
+              <motion.a
+                href={`mailto:${email}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.25 }}
+                whileHover={{ color: "#22d3ee", scale: 1.03 }}
+                style={{
+                  display: "inline-block",
+                  marginTop: "25px",
+                  color: "#9ca3af",
+                  fontSize: "17px",
+                  textDecoration: "none",
+                }}
+              >
+                {email}
+              </motion.a>
+            )}
 
-          {/* GITHUB */}
-          <motion.a
-            href="https://github.com/ashishmandal1889"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{
-              scale: 1.05,
-              borderColor: "#22d3ee",
-              color: "#22d3ee",
-            }}
-            whileTap={{ scale: 0.95 }}
-            style={{
-              border: "1px solid #333",
-              color: "#fff",
-              padding: "13px 25px",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontWeight: "600",
-            }}
-          >
-            GitHub
-          </motion.a>
+            {phone && (
+              <motion.a
+                href={`tel:${phone.replace(/[^+\d]/g, "")}`}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: 0.3 }}
+                whileHover={{ color: "#22d3ee", scale: 1.03 }}
+                style={{
+                  display: "block",
+                  marginTop: "10px",
+                  color: "#9ca3af",
+                  fontSize: "17px",
+                  textDecoration: "none",
+                }}
+              >
+                {phone}
+              </motion.a>
+            )}
 
-          {/* LINKEDIN */}
-          <motion.a
-            href="https://www.linkedin.com/in/ashish-kumar-a802192a0/"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{
-              scale: 1.05,
-              borderColor: "#22d3ee",
-              color: "#22d3ee",
-            }}
-            whileTap={{ scale: 0.95 }}
-            style={{
-              border: "1px solid #333",
-              color: "#fff",
-              padding: "13px 25px",
-              borderRadius: "8px",
-              textDecoration: "none",
-              fontWeight: "600",
-            }}
-          >
-            LinkedIn
-          </motion.a>
-        </motion.div>
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: 0.35 }}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                flexWrap: "wrap",
+                gap: "15px",
+                marginTop: "40px",
+              }}
+            >
+              {email && (
+                <motion.a
+                  href={`mailto:${email}`}
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "0 0 20px rgba(34, 211, 238, 0.3)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  style={{
+                    background: "#22d3ee",
+                    color: "#000",
+                    padding: "13px 25px",
+                    borderRadius: "8px",
+                    textDecoration: "none",
+                    fontWeight: "600",
+                  }}
+                >
+                  Email Me
+                </motion.a>
+              )}
+
+              {socialLinks.map((item) => (
+                <motion.a
+                  key={item.label}
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{
+                    scale: 1.05,
+                    borderColor: "#22d3ee",
+                    color: "#22d3ee",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  style={buttonStyle}
+                >
+                  {item.label}
+                </motion.a>
+              ))}
+            </motion.div>
+          </>
+        )}
       </div>
     </section>
   );

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { apiUrl } from "../config/api";
 
 function About() {
   const [about, setAbout] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/about")
+    fetch(apiUrl("/api/about"))
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch about section");
@@ -80,7 +81,7 @@ function About() {
             margin: "0 auto",
           }}
         >
-          {about?.description || "Loading..."}
+          {about?.description || "Computer Science undergraduate graduating in 2027, focused on AI/ML and Generative AI. I build LLM-powered applications, dependable backend APIs, and full-stack projects that solve practical problems."}
         </motion.p>
       </div>
     </section>

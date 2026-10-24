@@ -20,62 +20,36 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(
-            JwtAuthenticationFilter jwtAuthenticationFilter
-    ) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http
-    ) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
 
         http
                 .csrf(csrf -> csrf.disable())
-
-                .cors(cors -> cors.configurationSource(
-                        corsConfigurationSource()
-                ))
-
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS
-                        )
-                )
-
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/error").permitAll()
 
-                        // Public login
-                        .requestMatchers(
-                                "/api/auth/login"
-                        ).permitAll()
-
-                        // Public error handling
-                        .requestMatchers(
-                                "/error"
-                        ).permitAll()
-
-                        
-                        // Public GET requests
                         .requestMatchers(
                                 HttpMethod.GET,
                                 "/api/projects/**",
                                 "/api/about/**",
                                 "/api/skills/**",
                                 "/api/credentials/**",
-                                "/api/experiences/**"
-                        ).permitAll()
-
-                        // Explicit public Education GET requests
-                        .requestMatchers(
-                                HttpMethod.GET,
+                                "/api/experiences/**",
+                                "/api/contact",
+                                "/api/contact/**",
                                 "/api/education",
                                 "/api/education/**"
                         ).permitAll()
 
-
-                        // Admin-only POST requests
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/projects/**",
@@ -84,10 +58,11 @@ public class SecurityConfig {
                                 "/api/credentials/**",
                                 "/api/experiences/**",
                                 "/api/education",
-                                "/api/education/**"
+                                "/api/education/**",
+                                "/api/contact",
+                                "/api/contact/**"
                         ).hasRole("ADMIN")
 
-                        // Admin-only PUT requests
                         .requestMatchers(
                                 HttpMethod.PUT,
                                 "/api/projects/**",
@@ -96,10 +71,11 @@ public class SecurityConfig {
                                 "/api/credentials/**",
                                 "/api/experiences/**",
                                 "/api/education",
-                                "/api/education/**"
+                                "/api/education/**",
+                                "/api/contact",
+                                "/api/contact/**"
                         ).hasRole("ADMIN")
 
-                        // Admin-only DELETE requests
                         .requestMatchers(
                                 HttpMethod.DELETE,
                                 "/api/projects/**",
@@ -108,13 +84,13 @@ public class SecurityConfig {
                                 "/api/credentials/**",
                                 "/api/experiences/**",
                                 "/api/education",
-                                "/api/education/**"
+                                "/api/education/**",
+                                "/api/contact",
+                                "/api/contact/**"
                         ).hasRole("ADMIN")
 
-                        // Everything else requires authentication
                         .anyRequest().authenticated()
                 )
-
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
@@ -124,23 +100,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public FilterRegistrationBean<JwtAuthenticationFilter>
-    jwtFilterRegistration(
-            JwtAuthenticationFilter filter
-    ) {
+    public FilterRegistrationBean<JwtAuthenticationFilter> jwtFilterRegistration(
+            JwtAuthenticationFilter filter) {
+
         FilterRegistrationBean<JwtAuthenticationFilter> registration =
                 new FilterRegistrationBean<>(filter);
 
         registration.setEnabled(false);
-
         return registration;
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
 
-        CorsConfiguration configuration =
-                new CorsConfiguration();
+        CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173",
@@ -148,26 +121,17 @@ public class SecurityConfig {
         ));
 
         configuration.setAllowedMethods(List.of(
-                "GET",
-                "POST",
-                "PUT",
-                "DELETE",
-                "OPTIONS"
+                "GET", "POST", "PUT", "DELETE", "OPTIONS"
         ));
 
         configuration.setAllowedHeaders(List.of(
-                "Authorization",
-                "Content-Type"
+                "Authorization", "Content-Type"
         ));
 
         UrlBasedCorsConfigurationSource source =
                 new UrlBasedCorsConfigurationSource();
 
-        source.registerCorsConfiguration(
-                "/**",
-                configuration
-        );
-
+        source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 }

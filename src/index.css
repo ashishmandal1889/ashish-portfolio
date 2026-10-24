@@ -11,8 +11,8 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background: #000;
-  color: #fff;
+  background: #05080c;
+  color: #f4fbff;
   font-family: "Inter", Arial, Helvetica, sans-serif;
 }
 
@@ -84,6 +84,24 @@ section {
 
   .hero-section {
     padding: 100px 20px 60px !important;
+  }
+
+  .hero-section--premium {
+    min-height: 92vh;
+    padding: 120px 20px 72px !important;
+  }
+
+  .hero-title {
+    font-size: clamp(3.15rem, 17vw, 4.75rem) !important;
+  }
+
+  .projects-section--premium {
+    padding: 82px 20px;
+  }
+
+  .project-card--premium {
+    min-height: 320px;
+    padding: 24px;
   }
 
   .hero-section h1 {

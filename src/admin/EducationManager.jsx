@@ -1,7 +1,8 @@
 
 import { useEffect, useState } from "react";
+import { apiUrl } from "../config/api";
 
-const API_URL = "http://localhost:8080/api/education";
+const API_URL = apiUrl("/api/education");
 
 const emptyForm = {
   institution: "",

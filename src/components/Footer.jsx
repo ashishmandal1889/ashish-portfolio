@@ -122,7 +122,7 @@ function Footer() {
 
         {/* RESUME */}
         <motion.a
-          href="/resume.pdf"
+          href="/Resume.pdf"
           download
           whileHover={{
             scale: 1.05,

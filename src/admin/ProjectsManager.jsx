@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
+import { apiUrl } from "../config/api";
 
-const API_URL = "http://localhost:8080/api/projects";
+const API_URL = apiUrl("/api/projects");
 
 function ProjectsManager() {
   const [projects, setProjects] = useState([]);
