@@ -34,15 +34,15 @@ function Skills() {
     <section
       id="skills"
       style={{
-        padding: "100px 20px",
-        background: "#000",
-        color: "white",
+        padding: "110px 24px",
+        background: "linear-gradient(180deg, #031f17 0%, #064734 50%, #031f17 100%)",
+        color: "#E0FFC2",
         boxSizing: "border-box",
       }}
     >
       <div
         style={{
-          maxWidth: "1000px",
+          maxWidth: "1050px",
           margin: "0 auto",
           textAlign: "center",
         }}
@@ -54,9 +54,12 @@ function Skills() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           style={{
-            color: "#22d3ee",
-            fontSize: "16px",
-            marginBottom: "10px",
+            color: "#8FAF9A",
+            fontSize: "0.8rem",
+            fontWeight: "700",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            marginBottom: "12px",
           }}
         >
           My Skills
@@ -64,13 +67,16 @@ function Skills() {
 
         {/* TITLE */}
         <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
           style={{
-            fontSize: "clamp(32px, 6vw, 45px)",
-            margin: "10px 0 50px",
+            fontSize: "clamp(32px, 6vw, 48px)",
+            color: "#E0FFC2",
+            fontWeight: "700",
+            letterSpacing: "-0.03em",
+            margin: "0 0 54px",
           }}
         >
           Technologies I Work With
@@ -80,9 +86,8 @@ function Skills() {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns:
-              "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: "20px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(175px, 1fr))",
+            gap: "18px",
           }}
         >
           {skills.map((skill, index) => (
@@ -90,7 +95,7 @@ function Skills() {
               key={skill.id}
               initial={{
                 opacity: 0,
-                y: 30,
+                y: 25,
               }}
               whileInView={{
                 opacity: 1,
@@ -101,28 +106,32 @@ function Skills() {
                 amount: 0.2,
               }}
               transition={{
-                duration: 0.5,
-                delay: index * 0.08,
+                duration: 0.45,
+                delay: Math.min(index * 0.04, 0.4),
               }}
               whileHover={{
-                y: -8,
-                scale: 1.04,
-                borderColor: "#22d3ee",
-                boxShadow:
-                  "0 0 20px rgba(34, 211, 238, 0.15)",
+                y: -6,
+                scale: 1.03,
+                borderColor: "rgba(224, 255, 194, 0.45)",
+                boxShadow: "0 12px 30px rgba(0, 0, 0, 0.45), 0 0 20px rgba(224, 255, 194, 0.08)",
               }}
               whileTap={{
-                scale: 0.97,
+                scale: 0.98,
               }}
               style={{
-                padding: "25px 15px",
-                border: "1px solid #222",
-                borderRadius: "12px",
-                background: "#080808",
-                fontSize: "18px",
+                padding: "22px 16px",
+                border: "1px solid rgba(224, 255, 194, 0.14)",
+                borderRadius: "14px",
+                background: "linear-gradient(145deg, rgba(7, 53, 39, 0.8), rgba(3, 31, 23, 0.92))",
+                color: "#E0FFC2",
+                fontSize: "16px",
                 fontWeight: "600",
                 cursor: "default",
-                transition: "border-color 0.3s ease",
+                transition: "border-color 0.25s ease, box-shadow 0.25s ease",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                textAlign: "center",
               }}
             >
               {skill.name}

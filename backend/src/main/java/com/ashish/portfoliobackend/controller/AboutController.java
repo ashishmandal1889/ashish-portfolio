@@ -1,7 +1,7 @@
 package com.ashish.portfoliobackend.controller;
 
-import com.ashish.portfoliobackend.model.About;
-import com.ashish.portfoliobackend.repository.AboutRepository;
+import com.ashish.portfoliobackend.dto.AboutDto;
+import com.ashish.portfoliobackend.service.AboutService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,39 +10,32 @@ import java.util.List;
 @RequestMapping("/api/about")
 public class AboutController {
 
-    private final AboutRepository aboutRepository;
+    private final AboutService aboutService;
 
-    public AboutController(AboutRepository aboutRepository) {
-        this.aboutRepository = aboutRepository;
+    public AboutController(AboutService aboutService) {
+        this.aboutService = aboutService;
     }
 
     @GetMapping
-    public List<About> getAllAbout() {
-        return aboutRepository.findAll();
+    public List<AboutDto> getAllAbout() {
+        return aboutService.getAll();
     }
 
     @PostMapping
-    public About createAbout(@RequestBody About about) {
-        return aboutRepository.save(about);
+    public AboutDto createAbout(@RequestBody AboutDto about) {
+        return aboutService.create(about);
     }
 
     @PutMapping("/{id}")
-    public About updateAbout(
-            @PathVariable Long id,
-            @RequestBody About about
+    public AboutDto updateAbout(
+            @PathVariable String id,
+            @RequestBody AboutDto about
     ) {
-
-        About existingAbout = aboutRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("About section not found"));
-
-        existingAbout.setHeading(about.getHeading());
-        existingAbout.setDescription(about.getDescription());
-
-        return aboutRepository.save(existingAbout);
+        return aboutService.update(id, about);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteAbout(@PathVariable Long id) {
-        aboutRepository.deleteById(id);
+    public void deleteAbout(@PathVariable String id) {
+        aboutService.delete(id);
     }
 }

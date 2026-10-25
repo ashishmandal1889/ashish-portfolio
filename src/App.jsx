@@ -76,13 +76,14 @@ function Portfolio() {
             delay: 0.3,
           }}
           style={{
-            color: "#9ca3af",
-            fontWeight: "400",
+            color: "#8FAF9A",
+            fontWeight: "500",
             fontSize: "clamp(24px, 4vw, 40px)",
-            margin: "15px 0",
+            margin: "16px 0",
+            letterSpacing: "-0.02em",
           }}
         >
-          Software Engineer <span>&amp;</span> AI/ML Builder
+          Software Engineer <span style={{ color: "#E0FFC2" }}>&amp;</span> AI/ML Builder
         </motion.h2>
 
         {/* DESCRIPTION */}
@@ -96,10 +97,10 @@ function Portfolio() {
           }}
           style={{
             maxWidth: "700px",
-            color: "#737373",
+            color: "#8FAF9A",
             fontSize: "18px",
-            lineHeight: "1.7",
-            marginTop: "15px",
+            lineHeight: "1.75",
+            marginTop: "16px",
           }}
         >
           I design reliable software and intelligent experiences—from scalable
@@ -120,10 +121,10 @@ function Portfolio() {
           <motion.a
             href="#projects"
             whileHover={{
-              scale: 1.05,
+              scale: 1.03,
             }}
             whileTap={{
-              scale: 0.95,
+              scale: 0.97,
             }}
             className="button button--primary"
           >
@@ -134,12 +135,12 @@ function Portfolio() {
           <motion.a
             href="#contact"
             whileHover={{
-              scale: 1.05,
-              borderColor: "#22d3ee",
-              color: "#22d3ee",
+              scale: 1.03,
+              borderColor: "#E0FFC2",
+              color: "#E0FFC2",
             }}
             whileTap={{
-              scale: 0.95,
+              scale: 0.97,
             }}
             className="button button--secondary"
           >

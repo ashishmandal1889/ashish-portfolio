@@ -1,11 +1,9 @@
-
 package com.ashish.portfoliobackend.controller;
 
-import com.ashish.portfoliobackend.model.Experience;
-import com.ashish.portfoliobackend.repository.ExperienceRepository;
+import com.ashish.portfoliobackend.dto.ExperienceDto;
+import com.ashish.portfoliobackend.service.ExperienceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -13,62 +11,39 @@ import java.util.List;
 @RequestMapping("/api/experiences")
 public class ExperienceController {
 
-    private final ExperienceRepository experienceRepository;
+    private final ExperienceService experienceService;
 
-    public ExperienceController(
-            ExperienceRepository experienceRepository) {
-        this.experienceRepository = experienceRepository;
+    public ExperienceController(ExperienceService experienceService) {
+        this.experienceService = experienceService;
     }
 
     @GetMapping
-    public List<Experience> getAllExperiences() {
-        return experienceRepository.findAll();
+    public List<ExperienceDto> getAllExperiences() {
+        return experienceService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Experience getExperienceById(@PathVariable Long id) {
-        return experienceRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Experience not found"));
+    public ExperienceDto getExperienceById(@PathVariable String id) {
+        return experienceService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Experience createExperience(
-            @RequestBody Experience experience) {
-        return experienceRepository.save(experience);
+    public ExperienceDto createExperience(@RequestBody ExperienceDto experience) {
+        return experienceService.create(experience);
     }
 
     @PutMapping("/{id}")
-    public Experience updateExperience(
-            @PathVariable Long id,
-            @RequestBody Experience experience) {
-
-        Experience existing = experienceRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND,
-                        "Experience not found"));
-
-        existing.setCompany(experience.getCompany());
-        existing.setPosition(experience.getPosition());
-        existing.setDescription(experience.getDescription());
-        existing.setStartDate(experience.getStartDate());
-        existing.setEndDate(experience.getEndDate());
-        existing.setCurrent(experience.isCurrent());
-
-        return experienceRepository.save(existing);
+    public ExperienceDto updateExperience(
+            @PathVariable String id,
+            @RequestBody ExperienceDto experience
+    ) {
+        return experienceService.update(id, experience);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteExperience(@PathVariable Long id) {
-        if (!experienceRepository.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "Experience not found");
-        }
-
-        experienceRepository.deleteById(id);
+    public void deleteExperience(@PathVariable String id) {
+        experienceService.delete(id);
     }
 }

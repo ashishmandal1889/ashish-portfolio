@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { apiUrl } from "../config/api";
@@ -42,13 +41,19 @@ function Contact() {
   const leetCode = contact?.leetCode || "";
   const location = contact?.location || "";
 
-  const buttonStyle = {
-    border: "1px solid #333",
-    color: "#fff",
-    padding: "13px 25px",
+  const secondaryButtonStyle = {
+    border: "1px solid rgba(224, 255, 194, 0.38)",
+    background: "rgba(6, 71, 52, 0.35)",
+    color: "#E0FFC2",
+    padding: "13px 26px",
     borderRadius: "8px",
     textDecoration: "none",
     fontWeight: "600",
+    fontSize: "15px",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    transition: "all 0.25s ease",
   };
 
   const socialLinks = [
@@ -62,10 +67,10 @@ function Contact() {
     <section
       id="contact"
       style={{
-        minHeight: "80vh",
-        padding: "100px 40px",
-        background: "#000",
-        color: "#fff",
+        minHeight: "85vh",
+        padding: "110px 24px",
+        background: "linear-gradient(180deg, #031f17 0%, #064734 50%, #031f17 100%)",
+        color: "#E0FFC2",
         boxSizing: "border-box",
         display: "flex",
         alignItems: "center",
@@ -75,7 +80,7 @@ function Contact() {
       <div
         style={{
           width: "100%",
-          maxWidth: "900px",
+          maxWidth: "880px",
           textAlign: "center",
         }}
       >
@@ -85,22 +90,28 @@ function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           style={{
-            color: "#22d3ee",
-            fontSize: "18px",
-            marginBottom: "15px",
+            color: "#8FAF9A",
+            fontSize: "0.8rem",
+            fontWeight: "700",
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            marginBottom: "12px",
           }}
         >
           Get In Touch
         </motion.p>
 
         <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
           style={{
-            fontSize: "clamp(40px, 6vw, 60px)",
+            fontSize: "clamp(36px, 6vw, 54px)",
             margin: "0 0 20px",
+            color: "#E0FFC2",
+            fontWeight: "700",
+            letterSpacing: "-0.03em",
           }}
         >
           Let's Work Together
@@ -112,27 +123,34 @@ function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.15 }}
           style={{
-            maxWidth: "650px",
+            maxWidth: "680px",
             margin: "0 auto",
-            color: "#737373",
+            color: "#8FAF9A",
             fontSize: "18px",
-            lineHeight: "1.7",
+            lineHeight: "1.75",
           }}
         >
-          I'm currently looking for opportunities to start my career as a
-          software engineer. If you'd like to discuss a project,
-          opportunity, or just connect, feel free to reach out.
+          I'm currently seeking opportunities as a Software Engineer and AI/ML Builder.
+          Whether you want to discuss an opening, collaborate on an idea, or just connect,
+          I'd love to hear from you.
         </motion.p>
 
         {loading ? (
-          <p style={{ color: "#9ca3af", marginTop: "25px" }}>
+          <p style={{ color: "#8FAF9A", marginTop: "28px", fontSize: "16px" }}>
             Loading contact information...
           </p>
         ) : (
           <>
             {location && (
-              <p style={{ color: "#9ca3af", marginTop: "20px" }}>
-                {location}
+              <p
+                style={{
+                  color: "#b2d4bd",
+                  marginTop: "22px",
+                  fontSize: "16px",
+                  fontWeight: "500",
+                }}
+              >
+                📍 {location}
               </p>
             )}
 
@@ -143,16 +161,18 @@ function Contact() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.25 }}
-                whileHover={{ color: "#22d3ee", scale: 1.03 }}
+                whileHover={{ color: "#E0FFC2", scale: 1.02 }}
                 style={{
                   display: "inline-block",
-                  marginTop: "25px",
-                  color: "#9ca3af",
-                  fontSize: "17px",
+                  marginTop: "16px",
+                  color: "#8FAF9A",
+                  fontSize: "18px",
                   textDecoration: "none",
+                  fontWeight: "500",
+                  transition: "color 0.2s ease",
                 }}
               >
-                {email}
+                ✉️ {email}
               </motion.a>
             )}
 
@@ -163,16 +183,18 @@ function Contact() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.7, delay: 0.3 }}
-                whileHover={{ color: "#22d3ee", scale: 1.03 }}
+                whileHover={{ color: "#E0FFC2", scale: 1.02 }}
                 style={{
                   display: "block",
                   marginTop: "10px",
-                  color: "#9ca3af",
+                  color: "#8FAF9A",
                   fontSize: "17px",
                   textDecoration: "none",
+                  fontWeight: "500",
+                  transition: "color 0.2s ease",
                 }}
               >
-                {phone}
+                📞 {phone}
               </motion.a>
             )}
 
@@ -185,25 +207,29 @@ function Contact() {
                 display: "flex",
                 justifyContent: "center",
                 flexWrap: "wrap",
-                gap: "15px",
-                marginTop: "40px",
+                gap: "14px",
+                marginTop: "44px",
               }}
             >
               {email && (
                 <motion.a
                   href={`mailto:${email}`}
                   whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0 0 20px rgba(34, 211, 238, 0.3)",
+                    scale: 1.03,
+                    boxShadow: "0 12px 30px rgba(224, 255, 194, 0.28)",
                   }}
-                  whileTap={{ scale: 0.95 }}
+                  whileTap={{ scale: 0.97 }}
                   style={{
-                    background: "#22d3ee",
-                    color: "#000",
-                    padding: "13px 25px",
+                    background: "#E0FFC2",
+                    color: "#031f17",
+                    border: "1px solid #E0FFC2",
+                    padding: "13px 28px",
                     borderRadius: "8px",
                     textDecoration: "none",
-                    fontWeight: "600",
+                    fontWeight: "700",
+                    fontSize: "15px",
+                    boxShadow: "0 8px 24px rgba(224, 255, 194, 0.16)",
+                    transition: "all 0.25s ease",
                   }}
                 >
                   Email Me
@@ -217,12 +243,13 @@ function Contact() {
                   target="_blank"
                   rel="noopener noreferrer"
                   whileHover={{
-                    scale: 1.05,
-                    borderColor: "#22d3ee",
-                    color: "#22d3ee",
+                    scale: 1.03,
+                    borderColor: "#E0FFC2",
+                    backgroundColor: "rgba(224, 255, 194, 0.12)",
+                    color: "#E0FFC2",
                   }}
-                  whileTap={{ scale: 0.95 }}
-                  style={buttonStyle}
+                  whileTap={{ scale: 0.97 }}
+                  style={secondaryButtonStyle}
                 >
                   {item.label}
                 </motion.a>

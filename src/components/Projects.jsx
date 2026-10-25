@@ -47,13 +47,13 @@ function Projects() {
         </motion.p>
 
         <motion.h2
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 25 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7 }}
           className="section-heading"
         >
-          Projects I've Built
+          Featured Work
         </motion.h2>
 
         <div
@@ -70,9 +70,9 @@ function Projects() {
                 delay: index * 0.1,
               }}
               whileHover={{
-                y: -8,
-                borderColor: "#22d3ee",
-                boxShadow: "0 0 25px rgba(34, 211, 238, 0.12)",
+                y: -6,
+                borderColor: "rgba(224, 255, 194, 0.45)",
+                boxShadow: "0 16px 40px rgba(0, 0, 0, 0.5), 0 0 24px rgba(224, 255, 194, 0.08)",
               }}
               className="project-card project-card--premium"
             >
@@ -114,7 +114,7 @@ function Projects() {
                     rel="noopener noreferrer"
                     className="project-link project-link--primary"
                   >
-                    <ExternalLink size={17} />
+                    <ExternalLink size={16} />
                     Live Demo
                   </a>
                 )}

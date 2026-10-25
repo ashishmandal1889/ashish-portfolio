@@ -1,7 +1,7 @@
 package com.ashish.portfoliobackend.controller;
 
-import com.ashish.portfoliobackend.model.Skill;
-import com.ashish.portfoliobackend.repository.SkillRepository;
+import com.ashish.portfoliobackend.dto.SkillDto;
+import com.ashish.portfoliobackend.service.SkillService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,34 +10,32 @@ import java.util.List;
 @RequestMapping("/api/skills")
 public class SkillController {
 
-    private final SkillRepository skillRepository;
+    private final SkillService skillService;
 
-    public SkillController(SkillRepository skillRepository) {
-        this.skillRepository = skillRepository;
+    public SkillController(SkillService skillService) {
+        this.skillService = skillService;
     }
 
     @GetMapping
-    public List<Skill> getAllSkills() {
-        return skillRepository.findAll();
+    public List<SkillDto> getAllSkills() {
+        return skillService.getAll();
     }
 
     @PostMapping
-    public Skill createSkill(@RequestBody Skill skill) {
-        return skillRepository.save(skill);
+    public SkillDto createSkill(@RequestBody SkillDto skill) {
+        return skillService.create(skill);
     }
+
     @PutMapping("/{id}")
-     public Skill updateSkill(@PathVariable Long id, @RequestBody Skill skill) {
-
-        Skill existingSkill = skillRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Skill not found"));
-
-        existingSkill.setName(skill.getName());
-
-        return skillRepository.save(existingSkill);
+    public SkillDto updateSkill(
+            @PathVariable String id,
+            @RequestBody SkillDto skill
+    ) {
+        return skillService.update(id, skill);
     }
+
     @DeleteMapping("/{id}")
-        public void deleteSkill(@PathVariable Long id) {
-        skillRepository.deleteById(id);
+    public void deleteSkill(@PathVariable String id) {
+        skillService.delete(id);
     }
-
 }

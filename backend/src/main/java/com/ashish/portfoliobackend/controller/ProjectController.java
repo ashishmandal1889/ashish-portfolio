@@ -1,7 +1,7 @@
 package com.ashish.portfoliobackend.controller;
 
-import com.ashish.portfoliobackend.model.Project;
-import com.ashish.portfoliobackend.repository.ProjectRepository;
+import com.ashish.portfoliobackend.dto.ProjectDto;
+import com.ashish.portfoliobackend.service.ProjectService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,42 +10,32 @@ import java.util.List;
 @RequestMapping("/api/projects")
 public class ProjectController {
 
-    private final ProjectRepository projectRepository;
+    private final ProjectService projectService;
 
-    public ProjectController(ProjectRepository projectRepository) {
-        this.projectRepository = projectRepository;
+    public ProjectController(ProjectService projectService) {
+        this.projectService = projectService;
     }
 
     @GetMapping
-    public List<Project> getAllProjects() {
-        return projectRepository.findAll();
+    public List<ProjectDto> getAllProjects() {
+        return projectService.getAll();
     }
 
     @PostMapping
-    public Project createProject(@RequestBody Project project) {
-        return projectRepository.save(project);
+    public ProjectDto createProject(@RequestBody ProjectDto project) {
+        return projectService.create(project);
     }
 
     @PutMapping("/{id}")
-    public Project updateProject(
-            @PathVariable Long id,
-            @RequestBody Project project
+    public ProjectDto updateProject(
+            @PathVariable String id,
+            @RequestBody ProjectDto project
     ) {
-
-        Project existingProject = projectRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Project not found"));
-
-        existingProject.setTitle(project.getTitle());
-        existingProject.setDescription(project.getDescription());
-        existingProject.setTechnologies(project.getTechnologies());
-        existingProject.setGithubUrl(project.getGithubUrl());
-        existingProject.setLiveUrl(project.getLiveUrl());
-
-        return projectRepository.save(existingProject);
+        return projectService.update(id, project);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteProject(@PathVariable Long id) {
-        projectRepository.deleteById(id);
+    public void deleteProject(@PathVariable String id) {
+        projectService.delete(id);
     }
 }

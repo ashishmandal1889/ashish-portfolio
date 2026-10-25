@@ -1,12 +1,9 @@
-
 package com.ashish.portfoliobackend.controller;
 
-import com.ashish.portfoliobackend.model.Education;
-import com.ashish.portfoliobackend.repository.EducationRepository;
-
+import com.ashish.portfoliobackend.dto.EducationDto;
+import com.ashish.portfoliobackend.service.EducationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -15,58 +12,39 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class EducationController {
 
-    private final EducationRepository educationRepository;
+    private final EducationService educationService;
 
-    public EducationController(EducationRepository educationRepository) {
-        this.educationRepository = educationRepository;
+    public EducationController(EducationService educationService) {
+        this.educationService = educationService;
     }
 
     @GetMapping
-    public List<Education> getAllEducation() {
-        return educationRepository.findAll();
+    public List<EducationDto> getAllEducation() {
+        return educationService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Education getEducationById(@PathVariable Long id) {
-        return educationRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Education record not found"));
+    public EducationDto getEducationById(@PathVariable String id) {
+        return educationService.getById(id);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Education createEducation(@RequestBody Education education) {
-        return educationRepository.save(education);
+    public EducationDto createEducation(@RequestBody EducationDto education) {
+        return educationService.create(education);
     }
 
     @PutMapping("/{id}")
-    public Education updateEducation(
-            @PathVariable Long id,
-            @RequestBody Education education) {
-
-        Education existing = educationRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Education record not found"));
-
-        existing.setInstitution(education.getInstitution());
-        existing.setDegree(education.getDegree());
-        existing.setFieldOfStudy(education.getFieldOfStudy());
-        existing.setDescription(education.getDescription());
-        existing.setStartDate(education.getStartDate());
-        existing.setEndDate(education.getEndDate());
-        existing.setCurrent(education.isCurrent());
-
-        return educationRepository.save(existing);
+    public EducationDto updateEducation(
+            @PathVariable String id,
+            @RequestBody EducationDto education
+    ) {
+        return educationService.update(id, education);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEducation(@PathVariable Long id) {
-        if (!educationRepository.existsById(id)) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, "Education record not found");
-        }
-
-        educationRepository.deleteById(id);
+    public void deleteEducation(@PathVariable String id) {
+        educationService.delete(id);
     }
 }

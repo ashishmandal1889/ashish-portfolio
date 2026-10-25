@@ -1,62 +1,66 @@
+/* Education Section - Premium Forest Green Theme */
 
-/* Education Section */
 .education-section {
-  background: #000;
-  color: #fff;
-  padding: 100px 20px;
+  background: linear-gradient(180deg, #031f17 0%, #064734 50%, #031f17 100%);
+  color: #E0FFC2;
+  padding: 110px 24px;
   overflow: hidden;
 }
 
 .education-container {
-  max-width: 900px;
+  max-width: 920px;
   margin: 0 auto;
 }
 
 .education-subtitle {
-  color: #22d3ee;
+  color: #8FAF9A;
   text-align: center;
-  font-size: 14px;
-  letter-spacing: 4px;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   margin-bottom: 12px;
+  font-weight: 700;
 }
 
 .education-heading {
   text-align: center;
-  font-size: clamp(36px, 6vw, 52px);
+  font-size: clamp(34px, 6vw, 50px);
   margin: 0 0 65px;
   font-weight: 700;
+  letter-spacing: -0.03em;
+  color: #E0FFC2;
 }
 
 .education-heading span {
-  color: #22d3ee;
+  color: #E0FFC2;
+  font-weight: 800;
 }
 
 /* Timeline */
 .education-timeline {
   position: relative;
-  padding-left: 35px;
+  padding-left: 38px;
 }
 
 .education-timeline::before {
   content: "";
   position: absolute;
-  left: 7px;
-  top: 10px;
-  bottom: 10px;
+  left: 8px;
+  top: 12px;
+  bottom: 12px;
   width: 2px;
   background: linear-gradient(
     to bottom,
     transparent,
-    #22d3ee,
-    #155e75,
+    rgba(224, 255, 194, 0.6),
+    rgba(6, 71, 52, 0.9),
     transparent
   );
 }
 
 .education-item {
   position: relative;
-  margin-bottom: 35px;
+  margin-bottom: 38px;
   animation: educationEnter 0.7s ease both;
 }
 
@@ -66,22 +70,23 @@
 
 .education-dot {
   position: absolute;
-  left: -35px;
-  top: 25px;
+  left: -38px;
+  top: 26px;
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #22d3ee;
-  border: 4px solid #000;
-  box-shadow: 0 0 0 2px #22d3ee;
+  background: #E0FFC2;
+  border: 4px solid #031f17;
+  box-shadow: 0 0 0 2px rgba(224, 255, 194, 0.45);
 }
 
 .education-card {
   position: relative;
-  padding: 28px;
-  background: linear-gradient(135deg, #101820, #080b0e);
-  border: 1px solid #26343c;
+  padding: 30px;
+  background: linear-gradient(145deg, rgba(7, 53, 39, 0.85), rgba(3, 31, 23, 0.95));
+  border: 1px solid rgba(224, 255, 194, 0.14);
   border-radius: 16px;
+  box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.45);
   transition:
     transform 0.3s ease,
     border-color 0.3s ease,
@@ -90,18 +95,22 @@
 
 .education-card:hover {
   transform: translateY(-5px);
-  border-color: #22d3ee;
-  box-shadow: 0 12px 35px rgba(34, 211, 238, 0.09);
+  border-color: rgba(224, 255, 194, 0.42);
+  box-shadow:
+    0 16px 40px rgba(0, 0, 0, 0.5),
+    0 0 24px rgba(224, 255, 194, 0.08);
 }
 
 .education-degree {
-  color: #fff;
+  color: #E0FFC2;
   font-size: 23px;
-  margin: 0 0 12px;
+  font-weight: 700;
+  margin: 0 0 10px;
+  letter-spacing: -0.02em;
 }
 
 .education-institution {
-  color: #22d3ee;
+  color: #b2d4bd;
   font-size: 17px;
   font-weight: 600;
   margin: 0 0 12px;
@@ -109,26 +118,29 @@
 
 .education-field,
 .education-description {
-  color: #a3a3a3;
-  line-height: 1.8;
+  color: #8FAF9A;
+  line-height: 1.75;
   margin: 8px 0;
+  font-size: 15px;
 }
 
 .education-date {
   display: inline-block;
-  margin-top: 15px;
-  padding: 7px 12px;
+  margin-top: 16px;
+  padding: 6px 14px;
   border-radius: 20px;
-  border: 1px solid #164e63;
-  background: rgba(34, 211, 238, 0.08);
-  color: #67e8f9;
+  border: 1px solid rgba(224, 255, 194, 0.25);
+  background: rgba(224, 255, 194, 0.08);
+  color: #E0FFC2;
   font-size: 13px;
+  font-weight: 600;
 }
 
 .education-status {
-  color: #9ca3af;
+  color: #8FAF9A;
   text-align: center;
-  padding: 20px;
+  padding: 24px;
+  font-size: 16px;
 }
 
 @keyframes educationEnter {
@@ -146,7 +158,7 @@
 /* Mobile responsive design */
 @media (max-width: 600px) {
   .education-section {
-    padding: 70px 18px;
+    padding: 75px 18px;
   }
 
   .education-heading {
@@ -154,17 +166,18 @@
   }
 
   .education-timeline {
-    padding-left: 27px;
+    padding-left: 28px;
   }
 
   .education-dot {
-    left: -27px;
-    width: 12px;
-    height: 12px;
+    left: -28px;
+    width: 14px;
+    height: 14px;
+    top: 24px;
   }
 
   .education-card {
-    padding: 20px;
+    padding: 22px;
   }
 
   .education-degree {

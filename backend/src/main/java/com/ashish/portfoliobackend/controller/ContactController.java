@@ -1,9 +1,7 @@
-
 package com.ashish.portfoliobackend.controller;
 
-import com.ashish.portfoliobackend.model.Contact;
-import com.ashish.portfoliobackend.repository.ContactRepository;
-
+import com.ashish.portfoliobackend.dto.ContactDto;
+import com.ashish.portfoliobackend.service.ContactService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,50 +12,37 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:5173")
 public class ContactController {
 
-    private final ContactRepository contactRepository;
+    private final ContactService contactService;
 
-    public ContactController(ContactRepository contactRepository) {
-        this.contactRepository = contactRepository;
+    public ContactController(ContactService contactService) {
+        this.contactService = contactService;
     }
 
     @GetMapping
-    public List<Contact> getContacts() {
-        return contactRepository.findAll();
+    public List<ContactDto> getContacts() {
+        return contactService.getAll();
     }
 
     @PostMapping
-    public Contact createContact(@RequestBody Contact contact) {
-        return contactRepository.save(contact);
+    public ContactDto createContact(@RequestBody ContactDto contact) {
+        return contactService.create(contact);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Contact> updateContact(
-            @PathVariable Long id,
-            @RequestBody Contact updatedContact) {
-
-        return contactRepository.findById(id)
-                .map(contact -> {
-                    contact.setEmail(updatedContact.getEmail());
-                    contact.setPhone(updatedContact.getPhone());
-                    contact.setLocation(updatedContact.getLocation());
-                    contact.setLinkedIn(updatedContact.getLinkedIn());
-                    contact.setGithub(updatedContact.getGithub());
-                    contact.setLeetCode(updatedContact.getLeetCode());
-                    contact.setWebsite(updatedContact.getWebsite());
-
-                    Contact savedContact = contactRepository.save(contact);
-                    return ResponseEntity.ok(savedContact);
-                })
+    public ResponseEntity<ContactDto> updateContact(
+            @PathVariable String id,
+            @RequestBody ContactDto updatedContact
+    ) {
+        return contactService.update(id, updatedContact)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteContact(@PathVariable Long id) {
-        if (!contactRepository.existsById(id)) {
+    public ResponseEntity<Void> deleteContact(@PathVariable String id) {
+        if (!contactService.delete(id)) {
             return ResponseEntity.notFound().build();
         }
-
-        contactRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

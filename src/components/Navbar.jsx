@@ -21,6 +21,7 @@ function Navbar() {
     "Skills",
     "Projects",
     "Credentials",
+    "Experience",
     "Contact",
   ];
 
@@ -34,12 +35,12 @@ function Navbar() {
         top: 0,
         left: 0,
         right: 0,
-        padding: "18px 40px",
-        background: "rgba(0, 0, 0, 0.85)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-        borderBottom: "1px solid #222",
-        color: "white",
+        padding: "16px 40px",
+        background: "rgba(3, 31, 23, 0.88)",
+        backdropFilter: "blur(14px)",
+        WebkitBackdropFilter: "blur(14px)",
+        borderBottom: "1px solid rgba(224, 255, 194, 0.12)",
+        color: "#E0FFC2",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -49,15 +50,17 @@ function Navbar() {
     >
       {/* LOGO */}
       <motion.div
-        whileHover={{ scale: 1.05 }}
+        whileHover={{ scale: 1.04 }}
         style={{
           fontSize: "24px",
-          fontWeight: "bold",
+          fontWeight: "800",
+          letterSpacing: "-0.03em",
+          color: "#E0FFC2",
           cursor: "pointer",
         }}
         onClick={() => handleNavigation("home")}
       >
-        Ashish<span style={{ color: "#22d3ee" }}>.</span>
+        Ashish<span style={{ color: "#E0FFC2" }}>.</span>
       </motion.div>
 
       {/* DESKTOP MENU */}
@@ -65,7 +68,7 @@ function Navbar() {
         className="desktop-menu"
         style={{
           display: "flex",
-          gap: "25px",
+          gap: "24px",
           alignItems: "center",
         }}
       >
@@ -75,9 +78,15 @@ function Navbar() {
             href={`#${link.toLowerCase()}`}
             whileHover={{
               y: -2,
-              color: "#22d3ee",
+              color: "#E0FFC2",
             }}
             transition={{ duration: 0.2 }}
+            style={{
+              color: "#8FAF9A",
+              fontSize: "15px",
+              fontWeight: "500",
+              textDecoration: "none",
+            }}
           >
             {link}
           </motion.a>
@@ -87,11 +96,13 @@ function Navbar() {
           href="/admin/login"
           whileHover={{
             y: -2,
-            color: "#22d3ee",
+            color: "#E0FFC2",
           }}
           transition={{ duration: 0.2 }}
           style={{
-            color: "#9ca3af",
+            color: "#8FAF9A",
+            fontSize: "15px",
+            fontWeight: "500",
             textDecoration: "none",
           }}
         >
@@ -105,16 +116,21 @@ function Navbar() {
           rel="noopener noreferrer"
           whileHover={{
             y: -2,
-            color: "#000",
-            backgroundColor: "#22d3ee",
+            color: "#031f17",
+            backgroundColor: "#E0FFC2",
+            borderColor: "#E0FFC2",
           }}
           transition={{ duration: 0.2 }}
           style={{
-            border: "1px solid #22d3ee",
-            color: "#22d3ee",
-            padding: "7px 14px",
-            borderRadius: "6px",
+            border: "1px solid rgba(224, 255, 194, 0.35)",
+            background: "rgba(6, 71, 52, 0.35)",
+            color: "#E0FFC2",
+            padding: "8px 16px",
+            borderRadius: "7px",
+            fontSize: "14px",
+            fontWeight: "600",
             textDecoration: "none",
+            transition: "all 0.25s ease",
           }}
         >
           Resume
@@ -125,13 +141,14 @@ function Navbar() {
       <motion.button
         className="menu-button"
         onClick={() => setIsOpen(!isOpen)}
-        whileTap={{ scale: 0.9 }}
+        whileTap={{ scale: 0.92 }}
+        aria-label="Toggle navigation menu"
         style={{
           display: "none",
           background: "transparent",
           border: "none",
-          color: "white",
-          fontSize: "28px",
+          color: "#E0FFC2",
+          fontSize: "26px",
           cursor: "pointer",
         }}
       >
@@ -152,13 +169,15 @@ function Navbar() {
               top: "100%",
               left: 0,
               right: 0,
-              background: "rgba(0, 0, 0, 0.95)",
-              backdropFilter: "blur(12px)",
-              borderTop: "1px solid #222",
-              padding: "20px",
+              background: "rgba(3, 31, 23, 0.97)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              borderTop: "1px solid rgba(224, 255, 194, 0.14)",
+              borderBottom: "1px solid rgba(224, 255, 194, 0.14)",
+              padding: "24px 20px",
               display: "flex",
               flexDirection: "column",
-              gap: "20px",
+              gap: "18px",
               boxSizing: "border-box",
               overflow: "hidden",
             }}
@@ -171,7 +190,12 @@ function Navbar() {
                 className="mobile-nav-button"
                 whileHover={{
                   x: 5,
-                  color: "#22d3ee",
+                  color: "#E0FFC2",
+                }}
+                style={{
+                  color: "#8FAF9A",
+                  fontSize: "16px",
+                  fontWeight: "500",
                 }}
               >
                 {link}
@@ -183,9 +207,14 @@ function Navbar() {
               className="mobile-nav-button"
               whileHover={{
                 x: 5,
-                color: "#22d3ee",
+                color: "#E0FFC2",
               }}
-              style={{ textDecoration: "none" }}
+              style={{
+                textDecoration: "none",
+                color: "#8FAF9A",
+                fontSize: "16px",
+                fontWeight: "500",
+              }}
             >
               Admin Login
             </motion.a>
@@ -198,13 +227,17 @@ function Navbar() {
               className="mobile-nav-button"
               whileHover={{
                 x: 5,
-                color: "#22d3ee",
+                color: "#E0FFC2",
               }}
               style={{
                 textDecoration: "none",
+                color: "#E0FFC2",
+                fontWeight: "600",
+                fontSize: "16px",
+                paddingTop: "6px",
               }}
             >
-              Resume
+              Resume ↗
             </motion.a>
           </motion.div>
         )}

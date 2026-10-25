@@ -1,10 +1,8 @@
-
 package com.ashish.portfoliobackend.controller;
 
-import com.ashish.portfoliobackend.entity.Credential;
+import com.ashish.portfoliobackend.dto.CredentialDto;
 import com.ashish.portfoliobackend.entity.CredentialType;
-import com.ashish.portfoliobackend.repository.CredentialRepository;
-
+import com.ashish.portfoliobackend.service.CredentialService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,70 +16,53 @@ import java.util.List;
 })
 public class CredentialController {
 
-    private final CredentialRepository credentialRepository;
+    private final CredentialService credentialService;
 
-    public CredentialController(
-            CredentialRepository credentialRepository
-    ) {
-        this.credentialRepository = credentialRepository;
+    public CredentialController(CredentialService credentialService) {
+        this.credentialService = credentialService;
     }
 
     // Get all credentials
     @GetMapping
-    public List<Credential> getAllCredentials() {
-        return credentialRepository.findAll();
+    public List<CredentialDto> getAllCredentials() {
+        return credentialService.getAll();
     }
 
     // Get credentials by type
     @GetMapping("/type/{type}")
-    public List<Credential> getCredentialsByType(
+    public List<CredentialDto> getCredentialsByType(
             @PathVariable CredentialType type
     ) {
-        return credentialRepository.findByType(type);
+        return credentialService.getByType(type);
     }
 
     // Add credential
     @PostMapping
-    public Credential createCredential(
-            @RequestBody Credential credential
+    public CredentialDto createCredential(
+            @RequestBody CredentialDto credential
     ) {
-        
-        return credentialRepository.save(credential);
+        return credentialService.create(credential);
     }
 
     // Update credential
     @PutMapping("/{id}")
-    public ResponseEntity<Credential> updateCredential(
-            @PathVariable Long id,
-            @RequestBody Credential updatedCredential
+    public ResponseEntity<CredentialDto> updateCredential(
+            @PathVariable String id,
+            @RequestBody CredentialDto updatedCredential
     ) {
-        return credentialRepository.findById(id)
-                .map(existing -> {
-                    existing.setTitle(updatedCredential.getTitle());
-                    existing.setType(updatedCredential.getType());
-                    existing.setOrganization(updatedCredential.getOrganization());
-                    existing.setDescription(updatedCredential.getDescription());
-                    existing.setDate(updatedCredential.getDate());
-                    existing.setUrl(updatedCredential.getUrl());
-
-                    Credential saved =
-                            credentialRepository.save(existing);
-
-                    return ResponseEntity.ok(saved);
-                })
+        return credentialService.update(id, updatedCredential)
+                .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Delete credential
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCredential(
-            @PathVariable Long id
+            @PathVariable String id
     ) {
-        if (!credentialRepository.existsById(id)) {
+        if (!credentialService.delete(id)) {
             return ResponseEntity.notFound().build();
         }
-
-        credentialRepository.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }
