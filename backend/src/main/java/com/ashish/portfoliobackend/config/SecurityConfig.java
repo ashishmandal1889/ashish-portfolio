@@ -117,7 +117,8 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:5173",
-                "http://192.168.1.10:5173"
+                "http://192.168.1.10:5173",
+                "https://ashish-portfolio-seven-xi.vercel.app"
         ));
 
         configuration.setAllowedMethods(List.of(
