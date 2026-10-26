@@ -1,7 +1,6 @@
-const API_BASE_URL = (
-  import.meta.env.VITE_API_URL || "http://localhost:8080"
-).replace(/\/$/, "");
 
-export function apiUrl(path) {
-  return `${API_BASE_URL}${path}`;
-}
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://ashish-portfolio-api-i7gx.onrender.com";
+
+export default API_BASE_URL;
