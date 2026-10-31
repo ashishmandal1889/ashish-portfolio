@@ -1,6 +1,6 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./AdminDashboard.css";
+import { apiUrl } from "../config/api";
 
 import ProjectsManager from "./ProjectsManager";
 import SkillsManager from "./SkillsManager";
@@ -13,6 +13,46 @@ import ContactManager from "./ContactManager";
 
 function AdminDashboard() {
   const [activeSection, setActiveSection] = useState("Overview");
+  const [stats, setStats] = useState({
+    projects: "...",
+    skills: "...",
+    certificates: "...",
+    achievements: "...",
+    experiences: "...",
+  });
+
+  useEffect(() => {
+    // Load counts for overview cards
+    async function loadStats() {
+      try {
+        const [projRes, skillRes, credRes, expRes] = await Promise.allSettled([
+          fetch(apiUrl("/api/projects")).then((r) => r.json()),
+          fetch(apiUrl("/api/skills")).then((r) => r.json()),
+          fetch(apiUrl("/api/credentials")).then((r) => r.json()),
+          fetch(apiUrl("/api/experiences")).then((r) => r.json()),
+        ]);
+
+        const projects = projRes.status === "fulfilled" && Array.isArray(projRes.value) ? projRes.value.length : 0;
+        const skills = skillRes.status === "fulfilled" && Array.isArray(skillRes.value) ? skillRes.value.length : 0;
+        const credentials = credRes.status === "fulfilled" && Array.isArray(credRes.value) ? credRes.value : [];
+        const certificates = credentials.filter((c) => c.type === "CERTIFICATE").length;
+        const achievements = credentials.filter((c) => c.type === "ACHIEVEMENT").length;
+        const experiences = expRes.status === "fulfilled" && Array.isArray(expRes.value) ? expRes.value.length : 0;
+
+        setStats({
+          projects,
+          skills,
+          certificates,
+          achievements,
+          experiences,
+        });
+      } catch (e) {
+        console.warn("Failed to load dashboard stats:", e);
+      }
+    }
+
+    loadStats();
+  }, []);
 
   const menuItems = [
     "Overview",
@@ -39,27 +79,52 @@ function AdminDashboard() {
         return (
           <div>
             <h2>Welcome to your dashboard 👋</h2>
-            <p>From here you can manage your complete portfolio.</p>
+            <p>From here you can manage your complete portfolio data dynamically.</p>
 
             <div className="overview-grid">
-              <div className="overview-card">
+              <div
+                className="overview-card"
+                onClick={() => setActiveSection("Projects")}
+                style={{ cursor: "pointer" }}
+              >
                 <span>Projects</span>
-                <strong>—</strong>
+                <strong>{stats.projects}</strong>
               </div>
 
-              <div className="overview-card">
+              <div
+                className="overview-card"
+                onClick={() => setActiveSection("Skills")}
+                style={{ cursor: "pointer" }}
+              >
                 <span>Skills</span>
-                <strong>—</strong>
+                <strong>{stats.skills}</strong>
               </div>
 
-              <div className="overview-card">
+              <div
+                className="overview-card"
+                onClick={() => setActiveSection("Experience")}
+                style={{ cursor: "pointer" }}
+              >
+                <span>Experiences</span>
+                <strong>{stats.experiences}</strong>
+              </div>
+
+              <div
+                className="overview-card"
+                onClick={() => setActiveSection("Certificates")}
+                style={{ cursor: "pointer" }}
+              >
                 <span>Certificates</span>
-                <strong>—</strong>
+                <strong>{stats.certificates}</strong>
               </div>
 
-              <div className="overview-card">
+              <div
+                className="overview-card"
+                onClick={() => setActiveSection("Achievements")}
+                style={{ cursor: "pointer" }}
+              >
                 <span>Achievements</span>
-                <strong>—</strong>
+                <strong>{stats.achievements}</strong>
               </div>
             </div>
           </div>
@@ -102,13 +167,39 @@ function AdminDashboard() {
       case "Contact / Social":
         return <ContactManager />;
 
+      case "Resume":
+        return (
+          <div className="section-placeholder">
+            <h2>Resume Management</h2>
+            <p>
+              Your active resume is hosted at <code>/resume.pdf</code>.
+            </p>
+            <a
+              href="/resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="admin-action-btn"
+              style={{
+                display: "inline-block",
+                marginTop: "16px",
+                padding: "10px 18px",
+                background: "#22d3ee",
+                color: "#000",
+                borderRadius: "8px",
+                textDecoration: "none",
+                fontWeight: "700",
+              }}
+            >
+              Open Active Resume ↗
+            </a>
+          </div>
+        );
+
       default:
         return (
           <div className="section-placeholder">
             <h2>{activeSection}</h2>
-            <p>
-              {activeSection} management will be added next.
-            </p>
+            <p>{activeSection} management will be added next.</p>
           </div>
         );
     }

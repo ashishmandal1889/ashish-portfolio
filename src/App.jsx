@@ -1,171 +1,159 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { ExternalLink, FileText, ArrowDown } from "lucide-react";
+import { GithubIcon, LinkedinIcon } from "./components/Icons";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
-import About from "./components/About";
-import Skills from "./components/Skills";
+import Overview from "./components/Overview";
+import Experience from "./components/Experience";
 import Projects from "./components/Projects";
+import Skills from "./components/Skills";
+import Education from "./components/Education";
+import Credentials from "./components/Credentials";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
-import Experience from "./components/Experience";
 
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
-import Education from "./components/Education";
-import Credentials from "./components/Credentials";
 import ProtectedRoute from "./admin/ProtectedRoute";
-
 
 function Portfolio() {
   return (
     <div className="portfolio-shell">
       <Navbar />
 
-      {/* HERO SECTION */}
-      <section
-        id="home"
-        className="hero-section hero-section--premium"
-      >
-        <div className="hero-orb hero-orb--one" aria-hidden="true" />
-        <div className="hero-orb hero-orb--two" aria-hidden="true" />
-        <div className="hero-grid" aria-hidden="true" />
-        <div className="hero-content">
-        <motion.div
-          className="hero-profile"
-          initial={{ opacity: 0, scale: 0.88, y: -12 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.05 }}
-        >
-          <img
-            src="/WhatsApp Image 2026-09-27 at 11.56.01.jpeg"
-            alt="Ashish Kumar"
-            width="180"
-            height="180"
-          />
-        </motion.div>
-        {/* HELLO */}
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="hero-eyebrow"
-        >
-          <span className="status-dot" /> Available for opportunities
-        </motion.p>
+      {/* HERO SECTION (Editorial Asymmetric Layout) */}
+      <section id="home" className="hero-section--editorial">
+        <div className="section-container">
+          <div className="hero-grid-layout">
+            {/* Left Column: Oversized typography & info */}
+            <motion.div
+              className="hero-left"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+            >
+              <div className="hero-status-pill">
+                <span className="status-indicator" />
+                Available for Software Engineering &amp; AI Opportunities
+              </div>
 
-        {/* NAME */}
-        <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.8,
-            delay: 0.15,
-          }}
-          className="hero-title"
-        >
-          Ashish Kumar
-        </motion.h1>
+              <h1 className="hero-name-large">
+                Ashish <span>Kumar</span>
+              </h1>
 
-        {/* ROLE */}
-        <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.7,
-            delay: 0.3,
-          }}
-          style={{
-            color: "#8FAF9A",
-            fontWeight: "500",
-            fontSize: "clamp(24px, 4vw, 40px)",
-            margin: "16px 0",
-            letterSpacing: "-0.02em",
-          }}
-        >
-          Software Engineer <span style={{ color: "#E0FFC2" }}>&amp;</span> AI/ML Builder
-        </motion.h2>
+              <h2 className="hero-role-title">
+                Full Stack Developer | AI/ML Enthusiast
+              </h2>
 
-        {/* DESCRIPTION */}
-        <motion.p
-          className="hero-description hero-description--premium"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 0.8,
-            delay: 0.5,
-          }}
-          style={{
-            maxWidth: "700px",
-            color: "#8FAF9A",
-            fontSize: "18px",
-            lineHeight: "1.75",
-            marginTop: "16px",
-          }}
-        >
-          I design reliable software and intelligent experiences—from scalable
-          web platforms to practical AI/ML solutions that solve real problems.
-        </motion.p>
+              <p className="hero-intro-lead">
+                I engineer modern web platforms, distributed backends, and practical AI systems that transform complex data into intuitive, high-performance software.
+              </p>
 
-        {/* BUTTONS */}
-        <motion.div
-          className="hero-buttons hero-buttons--premium"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.7,
-            delay: 0.7,
-          }}
-        >
-          {/* PROJECT BUTTON */}
-          <motion.a
-            href="#projects"
-            whileHover={{
-              scale: 1.03,
-            }}
-            whileTap={{
-              scale: 0.97,
-            }}
-            className="button button--primary"
-          >
-            View My Projects
-          </motion.a>
+              <p className="hero-interests-text">
+                Specializing in Java Spring Boot, Python FastAPI, React, Cloud Automation (AWS), and Generative AI applications with rigorous engineering discipline.
+              </p>
 
-          {/* CONTACT BUTTON */}
-          <motion.a
-            href="#contact"
-            whileHover={{
-              scale: 1.03,
-              borderColor: "#E0FFC2",
-              color: "#E0FFC2",
-            }}
-            whileTap={{
-              scale: 0.97,
-            }}
-            className="button button--secondary"
-          >
-            Contact Me
-          </motion.a>
-        </motion.div>
+              {/* Two CTA Buttons */}
+              <div className="hero-cta-group">
+                <motion.a
+                  href="#projects"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="btn btn--primary"
+                >
+                  View Projects
+                  <ArrowDown size={16} />
+                </motion.a>
+
+                <motion.a
+                  href="/resume.pdf"
+                  download="Ashish_Kumar_Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="btn btn--secondary"
+                >
+                  <FileText size={16} />
+                  Download Resume
+                  <ExternalLink size={14} />
+                </motion.a>
+              </div>
+
+              {/* Social Links */}
+              <div className="hero-socials">
+                <span className="hero-socials-label">Connect:</span>
+                <a
+                  href="https://github.com/ashishmandal1889"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-social-link"
+                >
+                  <GithubIcon size={15} />
+                  GitHub
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/ashish-kumar-a802192a0/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hero-social-link"
+                >
+                  <LinkedinIcon size={15} />
+                  LinkedIn
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Right Column: Prominent Editorial Portrait */}
+            <motion.div
+              className="hero-right"
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+            >
+              <div className="hero-image-frame">
+                <div className="hero-image-backdrop" aria-hidden="true" />
+                <div className="hero-image-card">
+                  <img
+                    src="/profile.jpg"
+                    alt="Ashish Kumar"
+                    width="380"
+                    height="440"
+                    onError={(e) => {
+                      // Fallback to original image if needed
+                      e.currentTarget.src = "/WhatsApp Image 2026-09-27 at 11.56.01.jpeg";
+                    }}
+                  />
+                  <div className="hero-image-badge">
+                    <span className="badge-tag">Developer Profile</span>
+                    <span className="badge-text">Bengaluru, IN • Graduating 2027</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      {/* ABOUT */}
-     <About />
+      {/* OVERVIEW / ABOUT SECTION */}
+      <Overview />
 
-    {/* EDUCATION */}
-      <Education />
+      {/* WORK EXPERIENCE */}
+      <Experience />
 
-      {/* ACHIEVEMENTS & CERTIFICATIONS */}
-      <Credentials />
+      {/* FEATURED PROJECTS */}
+      <Projects />
 
-      {/* SKILLS */}
+      {/* TECHNICAL SKILLS */}
       <Skills />
 
-      {/* PROJECTS */}
-      <Projects />
-      {/* EXPERIENCE */}
-       <Experience />
+      {/* EDUCATION */}
+      <Education />
+
+      {/* CREDENTIALS & ACHIEVEMENTS */}
+      <Credentials />
 
       {/* CONTACT */}
       <Contact />
@@ -176,8 +164,6 @@ function Portfolio() {
   );
 }
 
-
-
 function App() {
   return (
     <BrowserRouter>
@@ -185,22 +171,19 @@ function App() {
         {/* Public portfolio */}
         <Route path="/" element={<Portfolio />} />
 
+        {/* Support direct /overview route as well */}
+        <Route path="/overview" element={<Portfolio />} />
+
         {/* Admin login */}
         <Route path="/admin/login" element={<AdminLogin />} />
 
         {/* Protected admin pages */}
         <Route element={<ProtectedRoute />}>
-          <Route
-            path="/admin/dashboard"
-            element={<AdminDashboard />}
-          />
+          <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Route>
 
         {/* Redirect unknown routes */}
-        <Route
-          path="*"
-          element={<Navigate to="/" replace />}
-        />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );

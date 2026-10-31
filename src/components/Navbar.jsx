@@ -8,21 +8,22 @@ function Navbar() {
     setIsOpen(false);
 
     setTimeout(() => {
-      document.getElementById(section)?.scrollIntoView({
+      const el = document.getElementById(section) || (section === "overview" ? document.getElementById("about") : null);
+      el?.scrollIntoView({
         behavior: "smooth",
       });
     }, 100);
   };
 
   const links = [
-    "Home",
-    "About",
-    "Education",
-    "Skills",
-    "Projects",
-    "Credentials",
-    "Experience",
-    "Contact",
+    { label: "Home", target: "home" },
+    { label: "Overview", target: "overview" },
+    { label: "Experience", target: "experience" },
+    { label: "Projects", target: "projects" },
+    { label: "Skills", target: "skills" },
+    { label: "Education", target: "education" },
+    { label: "Credentials", target: "credentials" },
+    { label: "Contact", target: "contact" },
   ];
 
   return (
@@ -36,11 +37,11 @@ function Navbar() {
         left: 0,
         right: 0,
         padding: "16px 40px",
-        background: "rgba(3, 31, 23, 0.88)",
+        background: "rgba(52, 61, 56, 0.92)",
         backdropFilter: "blur(14px)",
         WebkitBackdropFilter: "blur(14px)",
-        borderBottom: "1px solid rgba(224, 255, 194, 0.12)",
-        color: "#E0FFC2",
+        borderBottom: "1px solid rgba(197, 208, 197, 0.16)",
+        color: "#E9ECE7",
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
@@ -50,17 +51,17 @@ function Navbar() {
     >
       {/* LOGO */}
       <motion.div
-        whileHover={{ scale: 1.04 }}
+        whileHover={{ scale: 1.03 }}
         style={{
-          fontSize: "24px",
+          fontSize: "22px",
           fontWeight: "800",
           letterSpacing: "-0.03em",
-          color: "#E0FFC2",
+          color: "#E9ECE7",
           cursor: "pointer",
         }}
         onClick={() => handleNavigation("home")}
       >
-        Ashish<span style={{ color: "#E0FFC2" }}>.</span>
+        Ashish<span style={{ color: "#C5D0C5" }}>.</span>
       </motion.div>
 
       {/* DESKTOP MENU */}
@@ -68,27 +69,33 @@ function Navbar() {
         className="desktop-menu"
         style={{
           display: "flex",
-          gap: "24px",
+          gap: "22px",
           alignItems: "center",
         }}
       >
         {links.map((link) => (
           <motion.a
-            key={link}
-            href={`#${link.toLowerCase()}`}
+            key={link.target}
+            href={`#${link.target}`}
+            onClick={(e) => {
+              e.preventDefault();
+              handleNavigation(link.target);
+            }}
             whileHover={{
               y: -2,
-              color: "#E0FFC2",
+              color: "#E9ECE7",
             }}
             transition={{ duration: 0.2 }}
             style={{
-              color: "#8FAF9A",
-              fontSize: "15px",
-              fontWeight: "500",
+              color: "#C5D0C5",
+              fontSize: "14px",
+              fontWeight: "600",
               textDecoration: "none",
+              letterSpacing: "-0.01em",
+              cursor: "pointer",
             }}
           >
-            {link}
+            {link.label}
           </motion.a>
         ))}
 
@@ -96,13 +103,13 @@ function Navbar() {
           href="/admin/login"
           whileHover={{
             y: -2,
-            color: "#E0FFC2",
+            color: "#E9ECE7",
           }}
           transition={{ duration: 0.2 }}
           style={{
-            color: "#8FAF9A",
-            fontSize: "15px",
-            fontWeight: "500",
+            color: "#87988A",
+            fontSize: "14px",
+            fontWeight: "600",
             textDecoration: "none",
           }}
         >
@@ -111,29 +118,32 @@ function Navbar() {
 
         {/* DESKTOP RESUME */}
         <motion.a
-          href="/Resume.pdf"
+          href="/resume.pdf"
           target="_blank"
           rel="noopener noreferrer"
           whileHover={{
             y: -2,
-            color: "#031f17",
-            backgroundColor: "#E0FFC2",
-            borderColor: "#E0FFC2",
+            backgroundColor: "#C5D0C5",
+            borderColor: "#C5D0C5",
           }}
+          whileTap={{ scale: 0.96 }}
           transition={{ duration: 0.2 }}
           style={{
-            border: "1px solid rgba(224, 255, 194, 0.35)",
-            background: "rgba(6, 71, 52, 0.35)",
-            color: "#E0FFC2",
-            padding: "8px 16px",
+            border: "1px solid #87988A",
+            background: "#87988A",
+            color: "#343D38",
+            padding: "8px 18px",
             borderRadius: "7px",
-            fontSize: "14px",
-            fontWeight: "600",
+            fontSize: "13px",
+            fontWeight: "700",
             textDecoration: "none",
-            transition: "all 0.25s ease",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "4px",
+            boxShadow: "0 4px 12px rgba(22, 27, 24, 0.3)",
           }}
         >
-          Resume
+          Resume ↗
         </motion.a>
       </div>
 
@@ -147,9 +157,10 @@ function Navbar() {
           display: "none",
           background: "transparent",
           border: "none",
-          color: "#E0FFC2",
-          fontSize: "26px",
+          color: "#E9ECE7",
+          fontSize: "24px",
           cursor: "pointer",
+          padding: "6px",
         }}
       >
         {isOpen ? "✕" : "☰"}
@@ -169,51 +180,55 @@ function Navbar() {
               top: "100%",
               left: 0,
               right: 0,
-              background: "rgba(3, 31, 23, 0.97)",
+              background: "rgba(52, 61, 56, 0.98)",
               backdropFilter: "blur(16px)",
               WebkitBackdropFilter: "blur(16px)",
-              borderTop: "1px solid rgba(224, 255, 194, 0.14)",
-              borderBottom: "1px solid rgba(224, 255, 194, 0.14)",
+              borderTop: "1px solid rgba(197, 208, 197, 0.16)",
+              borderBottom: "1px solid rgba(197, 208, 197, 0.16)",
               padding: "24px 20px",
               display: "flex",
               flexDirection: "column",
-              gap: "18px",
+              gap: "16px",
               boxSizing: "border-box",
               overflow: "hidden",
             }}
           >
-            {/* MOBILE NAVIGATION LINKS */}
             {links.map((link) => (
               <motion.button
-                key={link}
-                onClick={() => handleNavigation(link.toLowerCase())}
+                key={link.target}
+                onClick={() => handleNavigation(link.target)}
                 className="mobile-nav-button"
                 whileHover={{
                   x: 5,
-                  color: "#E0FFC2",
+                  color: "#E9ECE7",
                 }}
                 style={{
-                  color: "#8FAF9A",
+                  background: "none",
+                  border: "none",
+                  color: "#C5D0C5",
                   fontSize: "16px",
-                  fontWeight: "500",
+                  fontWeight: "600",
+                  textAlign: "left",
+                  padding: "6px 0",
+                  cursor: "pointer",
                 }}
               >
-                {link}
+                {link.label}
               </motion.button>
             ))}
 
             <motion.a
               href="/admin/login"
-              className="mobile-nav-button"
               whileHover={{
                 x: 5,
-                color: "#E0FFC2",
+                color: "#E9ECE7",
               }}
               style={{
                 textDecoration: "none",
-                color: "#8FAF9A",
+                color: "#87988A",
                 fontSize: "16px",
-                fontWeight: "500",
+                fontWeight: "600",
+                padding: "6px 0",
               }}
             >
               Admin Login
@@ -221,23 +236,26 @@ function Navbar() {
 
             {/* MOBILE RESUME */}
             <motion.a
-              href="/Resume.pdf"
+              href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="mobile-nav-button"
               whileHover={{
                 x: 5,
-                color: "#E0FFC2",
+                color: "#C5D0C5",
               }}
               style={{
                 textDecoration: "none",
-                color: "#E0FFC2",
-                fontWeight: "600",
-                fontSize: "16px",
-                paddingTop: "6px",
+                color: "#343D38",
+                background: "#87988A",
+                fontWeight: "700",
+                fontSize: "15px",
+                padding: "10px 16px",
+                borderRadius: "8px",
+                textAlign: "center",
+                marginTop: "8px",
               }}
             >
-              Resume ↗
+              Download Resume ↗
             </motion.a>
           </motion.div>
         )}
