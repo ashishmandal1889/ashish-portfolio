@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { Briefcase, Calendar, CheckCircle2 } from "lucide-react";
 import { GithubIcon } from "./Icons";
 import { apiUrl } from "../config/api";
 
@@ -8,38 +8,51 @@ const API_URL = apiUrl("/api/experiences");
 
 const defaultExperiences = [
   {
+    id: "exp-thiranex-intern",
+    typeBadge: "Employment / Internship",
+    position: "Full Stack Development Intern",
+    company: "Thiranex",
+    period: "2026 — Present",
+    startDate: "2026-01-01",
+    endDate: null,
+    current: true,
+    technologies: ["React", "JavaScript", "REST APIs", "CSS3", "Git"],
+    responsibilities: [
+      "Working on full-stack development tasks.",
+      "Developing a personal portfolio website.",
+      "Working with frontend and backend technologies.",
+    ],
+  },
+  {
+    id: "exp-code-unnati",
+    typeBadge: "Training Programme",
+    position: "Machine Learning Engineer Trainee",
+    company: "Code Unnati – SAP & Edunet Foundation",
+    description: "",
+    responsibilities: [
+      "Developing foundational knowledge of Python programming.",
+      "Learning Machine Learning and Artificial Intelligence concepts.",
+      "Exploring data analysis and practical learning activities.",
+    ],
+    technologies: ["Python", "Machine Learning", "Artificial Intelligence", "Data Analysis"],
+  },
+  {
     id: "exp-aws-infra",
-    position: "AWS Cloud Infrastructure & Monitoring Automation",
-    company: "Cloud Infrastructure Project",
+    typeBadge: "Independent Project",
+    position: "Cloud Infrastructure & Automation Architect",
+    company: "AWS Cloud Infrastructure & Monitoring Automation",
     period: "February 2026 – March 2026",
     startDate: "2026-02-01",
     endDate: "2026-03-31",
     current: false,
-    technologies: ["AWS", "VPC", "EC2", "S3", "IAM", "CloudWatch", "SNS", "EBS", "Linux", "Python", "Bash", "Git"],
+    technologies: ["AWS", "EC2", "VPC", "S3", "IAM", "CloudWatch", "SNS", "Linux", "Python", "Bash"],
     responsibilities: [
-      "Designed and configured a custom AWS VPC with a public subnet, Internet Gateway, route table, and EC2-based web application deployment.",
-      "Implemented IAM roles and policies to enable secure, controlled access to Amazon S3 from EC2 instances.",
-      "Configured CloudWatch monitoring, CPU utilization alarms, and SNS notifications.",
-      "Automated Apache log archival and daily backups to Amazon S3 using Bash scripts and cron jobs.",
-      "Developed Python scripts for web log analysis and traffic reporting.",
-      "Configured EBS snapshots and documented deployment, backup, disaster recovery, and security procedures.",
+      "Configured AWS VPC, EC2, and S3 infrastructure.",
+      "Implemented monitoring and alerts using CloudWatch and SNS.",
+      "Automated log archiving and backups using Bash, cron, and Python.",
     ],
     liveUrl: "http://ashish-aws-project.duckdns.org/",
     githubUrl: "https://github.com/ashishmandal1889/aws-cloud-infrastructure-project",
-  },
-  {
-    id: "exp-thiranex-intern",
-    position: "Full Stack Development Intern",
-    company: "Thiranex",
-    period: "2026 – Present",
-    startDate: "2026-01-01",
-    endDate: null,
-    current: true,
-    technologies: ["React", "JavaScript", "Spring Boot", "REST APIs", "CSS3", "Git", "Responsive Design"],
-    responsibilities: [
-      "Developing a personal portfolio website to showcase technical skills, projects, and professional achievements.",
-      "Working on responsive frontend development and full-stack application development as part of internship tasks.",
-    ],
   },
 ];
 
@@ -66,23 +79,63 @@ function Experience() {
         }
         const data = await response.json();
         if (Array.isArray(data) && data.length > 0) {
-          // Filter out dummy/empty test records (e.g. company 'xyz' without dates)
           const validApiData = data.filter(
             (item) => item.company && item.company.trim() !== "xyz" && item.company.trim() !== ""
           );
 
           if (validApiData.length > 0) {
-            // Merge with default experiences to ensure core entries remain visible
             const merged = [...defaultExperiences];
             validApiData.forEach((apiItem) => {
-              const exists = merged.some(
-                (d) =>
-                  d.position.toLowerCase() === apiItem.position?.toLowerCase() &&
-                  d.company.toLowerCase() === apiItem.company?.toLowerCase()
-              );
-              if (!exists) {
+              const matchIdx = merged.findIndex((d) => {
+                const normComp1 = (d.company || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+                const normComp2 = (apiItem.company || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+                const normPos1 = (d.position || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+                const normPos2 = (apiItem.position || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+                return (
+                  (normPos1 === normPos2 && (normComp1 === normComp2 || normComp1.includes(normComp2) || normComp2.includes(normComp1))) ||
+                  (normComp1.includes("codeunnati") && normComp2.includes("codeunnati"))
+                );
+              });
+
+              let descText = "";
+              let respList = [];
+              if (apiItem.description) {
+                const lines = apiItem.description
+                  .split("\n")
+                  .map((l) => l.trim())
+                  .filter(Boolean);
+                const bullets = lines.filter((l) => l.startsWith("•") || l.startsWith("-") || l.startsWith("*"));
+                const nonBullets = lines.filter((l) => !l.startsWith("•") && !l.startsWith("-") && !l.startsWith("*"));
+
+                if (bullets.length > 0) {
+                  descText = nonBullets.join(" ");
+                  respList = bullets.map((b) => b.replace(/^[•\-*]\s*/, ""));
+                } else if (lines.length > 1) {
+                  respList = lines;
+                } else {
+                  descText = lines[0] || "";
+                }
+              }
+
+              if (matchIdx !== -1) {
+                merged[matchIdx] = {
+                  ...merged[matchIdx],
+                  id: apiItem.id || merged[matchIdx].id,
+                  company: apiItem.company || merged[matchIdx].company,
+                  position: apiItem.position || merged[matchIdx].position,
+                  startDate: apiItem.startDate ?? merged[matchIdx].startDate,
+                  endDate: apiItem.endDate ?? merged[matchIdx].endDate,
+                  current: Boolean(apiItem.current),
+                  period: apiItem.startDate
+                    ? `${formatDate(apiItem.startDate)} — ${apiItem.current ? "Present" : formatDate(apiItem.endDate) || ""}`
+                    : merged[matchIdx].period,
+                  description: descText || merged[matchIdx].description,
+                  responsibilities: respList.length > 0 ? respList : merged[matchIdx].responsibilities,
+                };
+              } else {
                 merged.push({
                   id: apiItem.id || String(Math.random()),
+                  typeBadge: "Professional Experience",
                   position: apiItem.position,
                   company: apiItem.company,
                   startDate: apiItem.startDate,
@@ -90,10 +143,9 @@ function Experience() {
                   current: Boolean(apiItem.current),
                   period: apiItem.startDate
                     ? `${formatDate(apiItem.startDate)} — ${apiItem.current ? "Present" : formatDate(apiItem.endDate) || ""}`
-                    : "Experience Period",
-                  responsibilities: apiItem.description
-                    ? apiItem.description.split("\n").filter((line) => line.trim())
-                    : [],
+                    : "",
+                  description: descText,
+                  responsibilities: respList,
                   technologies: [],
                 });
               }
@@ -102,7 +154,7 @@ function Experience() {
           }
         }
       } catch (err) {
-        console.warn("Using default rich experiences:", err.message);
+        console.warn("Using default verified experiences:", err.message);
         setExperiences(defaultExperiences);
       } finally {
         setLoading(false);
@@ -115,110 +167,134 @@ function Experience() {
   return (
     <section id="experience" className="experience-section">
       <div className="section-container">
-        <div className="section-header section-header--center">
-          <motion.p
-            className="section-eyebrow"
-            initial={{ opacity: 0, y: 15 }}
+        {/* Section Header */}
+        <div className="editorial-section-header">
+          <motion.span
+            className="editorial-section-label"
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="dot" />
-            Career &amp; Practical Experience
-          </motion.p>
+            PRACTICAL TRACK
+          </motion.span>
 
           <motion.h2
-            className="section-heading"
-            initial={{ opacity: 0, y: 20 }}
+            className="editorial-section-heading"
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            Work &amp; <span>Project Experience</span>
+            Experience &amp; Training
           </motion.h2>
 
           <motion.p
-            className="section-description"
-            initial={{ opacity: 0, y: 15 }}
+            className="editorial-section-desc"
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            Hands-on software development internships and production cloud infrastructure deployments.
+            Hands-on software development internships, machine learning training, and independent production cloud deployments.
           </motion.p>
         </div>
 
         {loading && experiences.length === 0 ? (
-          <p style={{ textAlign: "center", color: "var(--text-muted)" }}>Loading experiences...</p>
+          <p style={{ textAlign: "center", color: "#64756c" }}>Loading experiences...</p>
         ) : (
-          <div className="experience-list">
-            {experiences.map((exp, index) => (
-              <motion.article
-                key={exp.id}
-                className="experience-card"
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: index * 0.12 }}
-              >
-                <div className="experience-card-header">
-                  <div>
-                    <h3 className="experience-title">{exp.position}</h3>
-                    <p className="experience-company-lead">{exp.company}</p>
+          <div className="experience-timeline-container">
+            <div className="timeline-spine" aria-hidden="true" />
+
+            <div className="experience-timeline-list">
+              {experiences.map((exp, index) => (
+                <motion.article
+                  key={exp.id}
+                  className="experience-timeline-item"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <div className="timeline-node">
+                    <Briefcase size={14} className="timeline-node-icon" />
                   </div>
 
-                  <span className="experience-period-badge">
-                    {exp.period ||
-                      `${formatDate(exp.startDate) || ""} — ${exp.current ? "Present" : formatDate(exp.endDate) || ""}`}
-                  </span>
-                </div>
+                  <div className="experience-card-premium">
+                    <div className="exp-card-header">
+                      <div>
+                        {exp.typeBadge && (
+                          <span className="exp-type-tag">
+                            {exp.typeBadge}
+                          </span>
+                        )}
+                        <span className="exp-company-badge">{exp.company}</span>
+                        <h3 className="exp-position-title">{exp.position}</h3>
+                      </div>
 
-                {exp.responsibilities && exp.responsibilities.length > 0 && (
-                  <ul className="experience-responsibilities">
-                    {exp.responsibilities.map((resp, rIdx) => (
-                      <li key={rIdx}>{resp}</li>
-                    ))}
-                  </ul>
-                )}
+                      {(exp.period || exp.startDate) && (
+                        <div className="exp-period-pill">
+                          <Calendar size={13} style={{ marginRight: "6px" }} />
+                          {exp.period ||
+                            `${formatDate(exp.startDate) || ""} — ${exp.current ? "Present" : formatDate(exp.endDate) || ""}`}
+                        </div>
+                      )}
+                    </div>
 
-                {exp.technologies && exp.technologies.length > 0 && (
-                  <div className="experience-technologies">
-                    {exp.technologies.map((tech) => (
-                      <span key={tech} className="experience-tech-badge">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {(exp.liveUrl || exp.githubUrl) && (
-                  <div className="experience-links-row">
-                    {exp.liveUrl && (
-                      <a
-                        href={exp.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="project-action-btn project-action-btn--primary"
-                      >
-                        <ExternalLink size={15} />
-                        Live Demo
-                      </a>
+                    {exp.description && (
+                      <p className="exp-description-text">{exp.description}</p>
                     )}
-                    {exp.githubUrl && (
-                      <a
-                        href={exp.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="project-action-btn project-action-btn--secondary"
-                      >
-                        <GithubIcon size={15} />
-                        View Repository
-                      </a>
+
+                    {exp.responsibilities && exp.responsibilities.length > 0 && (
+                      <ul className="exp-bullet-list">
+                        {exp.responsibilities.map((resp, rIdx) => (
+                          <li key={rIdx} className="exp-bullet-item">
+                            <CheckCircle2 size={15} className="bullet-check-icon" />
+                            <span>{resp}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {exp.technologies && exp.technologies.length > 0 && (
+                      <div className="exp-tech-chips">
+                        {exp.technologies.map((tech) => (
+                          <span key={tech} className="exp-tech-chip">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {(exp.liveUrl || exp.githubUrl) && (
+                      <div className="exp-action-row">
+                        {exp.liveUrl && (
+                          <a
+                            href={exp.liveUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-editorial-primary btn--sm"
+                          >
+                            Live Deployment
+                          </a>
+                        )}
+                        {exp.githubUrl && (
+                          <a
+                            href={exp.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="btn-editorial-secondary btn--sm"
+                          >
+                            <GithubIcon size={14} style={{ marginRight: "6px" }} />
+                            Repository
+                          </a>
+                        )}
+                      </div>
                     )}
                   </div>
-                )}
-              </motion.article>
-            ))}
+                </motion.article>
+              ))}
+            </div>
           </div>
         )}
       </div>

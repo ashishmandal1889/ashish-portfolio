@@ -1,4 +1,3 @@
-
 package com.ashish.portfoliobackend.config;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -39,10 +38,15 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                 HttpMethod.GET,
+                                "/api/projects",
                                 "/api/projects/**",
+                                "/api/about",
                                 "/api/about/**",
+                                "/api/skills",
                                 "/api/skills/**",
+                                "/api/credentials",
                                 "/api/credentials/**",
+                                "/api/experiences",
                                 "/api/experiences/**",
                                 "/api/contact",
                                 "/api/contact/**",
@@ -52,10 +56,15 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                 HttpMethod.POST,
+                                "/api/projects",
                                 "/api/projects/**",
+                                "/api/about",
                                 "/api/about/**",
+                                "/api/skills",
                                 "/api/skills/**",
+                                "/api/credentials",
                                 "/api/credentials/**",
+                                "/api/experiences",
                                 "/api/experiences/**",
                                 "/api/education",
                                 "/api/education/**",
@@ -65,10 +74,15 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                 HttpMethod.PUT,
+                                "/api/projects",
                                 "/api/projects/**",
+                                "/api/about",
                                 "/api/about/**",
+                                "/api/skills",
                                 "/api/skills/**",
+                                "/api/credentials",
                                 "/api/credentials/**",
+                                "/api/experiences",
                                 "/api/experiences/**",
                                 "/api/education",
                                 "/api/education/**",
@@ -78,10 +92,15 @@ public class SecurityConfig {
 
                         .requestMatchers(
                                 HttpMethod.DELETE,
+                                "/api/projects",
                                 "/api/projects/**",
+                                "/api/about",
                                 "/api/about/**",
+                                "/api/skills",
                                 "/api/skills/**",
+                                "/api/credentials",
                                 "/api/credentials/**",
+                                "/api/experiences",
                                 "/api/experiences/**",
                                 "/api/education",
                                 "/api/education/**",

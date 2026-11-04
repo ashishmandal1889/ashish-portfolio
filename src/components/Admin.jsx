@@ -655,7 +655,7 @@ function Admin() {
                   name="technologies"
                   value={projectForm.technologies}
                   onChange={handleProjectChange}
-                  placeholder="React, Spring Boot, PostgreSQL"
+                  placeholder="React, Node.js, PostgreSQL"
                   style={styles.input}
                   required
                 />

@@ -215,7 +215,7 @@ function ProjectsManager() {
               name="technologies"
               value={form.technologies}
               onChange={handleChange}
-              placeholder="React, Spring Boot, PostgreSQL"
+              placeholder="React, Node.js, PostgreSQL"
               required
             />
           </div>

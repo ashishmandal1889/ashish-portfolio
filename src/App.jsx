@@ -1,7 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ExternalLink, FileText, ArrowDown } from "lucide-react";
-import { GithubIcon, LinkedinIcon } from "./components/Icons";
 import "./App.css";
 
 import Navbar from "./components/Navbar";
@@ -23,116 +21,78 @@ function Portfolio() {
     <div className="portfolio-shell">
       <Navbar />
 
-      {/* HERO SECTION (Editorial Asymmetric Layout) */}
-      <section id="home" className="hero-section--editorial">
-        <div className="section-container">
-          <div className="hero-grid-layout">
-            {/* Left Column: Oversized typography & info */}
+      {/* HERO SECTION — Premium Minimalist Editorial */}
+      <section id="home" className="hero-editorial-section">
+        <div className="hero-editorial-container">
+          <div className="hero-editorial-grid">
+            {/* Left Column: Name, Role, Headline, Introduction, Buttons */}
             <motion.div
-              className="hero-left"
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
+              className="hero-editorial-left"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, ease: "easeOut" }}
             >
-              <div className="hero-status-pill">
-                <span className="status-indicator" />
-                Available for Software Engineering &amp; AI Opportunities
-              </div>
+              <span className="hero-editorial-label">
+                Software Engineer | Full-Stack Developer | AI/ML Enthusiast
+              </span>
 
-              <h1 className="hero-name-large">
-                Ashish <span>Kumar</span>
+              <h1 className="hero-editorial-name">
+                Ashish Kumar
               </h1>
 
-              <h2 className="hero-role-title">
-                Full Stack Developer | AI/ML Enthusiast
+              <h2 className="hero-editorial-subheadline">
+                Building Practical Software Solutions with Code and AI.
               </h2>
 
-              <p className="hero-intro-lead">
-                I engineer modern web platforms, distributed backends, and practical AI systems that transform complex data into intuitive, high-performance software.
+              <p className="hero-editorial-intro">
+                Computer Science undergraduate interested in full-stack development, software engineering and Artificial Intelligence. I build web applications, backend APIs and AI-powered solutions.
               </p>
 
-              <p className="hero-interests-text">
-                Specializing in Java Spring Boot, Python FastAPI, React, Cloud Automation (AWS), and Generative AI applications with rigorous engineering discipline.
-              </p>
-
-              {/* Two CTA Buttons */}
-              <div className="hero-cta-group">
-                <motion.a
-                  href="#projects"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="btn btn--primary"
-                >
+              <div className="hero-editorial-actions">
+                <a href="#projects" className="btn-editorial-primary">
                   View Projects
-                  <ArrowDown size={16} />
-                </motion.a>
+                </a>
 
-                <motion.a
+                <a
                   href="/resume.pdf"
                   download="Ashish_Kumar_Resume.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="btn btn--secondary"
+                  className="btn-editorial-secondary"
                 >
-                  <FileText size={16} />
                   Download Resume
-                  <ExternalLink size={14} />
-                </motion.a>
-              </div>
-
-              {/* Social Links */}
-              <div className="hero-socials">
-                <span className="hero-socials-label">Connect:</span>
-                <a
-                  href="https://github.com/ashishmandal1889"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hero-social-link"
-                >
-                  <GithubIcon size={15} />
-                  GitHub
-                </a>
-                <a
-                  href="https://www.linkedin.com/in/ashish-kumar-a802192a0/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hero-social-link"
-                >
-                  <LinkedinIcon size={15} />
-                  LinkedIn
                 </a>
               </div>
             </motion.div>
 
-            {/* Right Column: Prominent Editorial Portrait */}
+            {/* Right Column: Rectangular Portrait with Sage Accent */}
             <motion.div
-              className="hero-right"
-              initial={{ opacity: 0, scale: 0.92, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
+              className="hero-editorial-right"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
             >
-              <div className="hero-image-frame">
-                <div className="hero-image-backdrop" aria-hidden="true" />
-                <div className="hero-image-card">
-                  <img
-                    src="/profile.jpg"
-                    alt="Ashish Kumar"
-                    width="380"
-                    height="440"
-                    onError={(e) => {
-                      // Fallback to original image if needed
-                      e.currentTarget.src = "/WhatsApp Image 2026-09-27 at 11.56.01.jpeg";
-                    }}
-                  />
-                  <div className="hero-image-badge">
-                    <span className="badge-tag">Developer Profile</span>
-                    <span className="badge-text">Bengaluru, IN • Graduating 2027</span>
-                  </div>
-                </div>
+              <div className="hero-portrait-frame">
+                <div className="hero-portrait-block" aria-hidden="true" />
+                <img
+                  src="/profile.jpg"
+                  alt="Ashish Kumar - Software Engineer | Full-Stack Developer | AI/ML Enthusiast"
+                  className="hero-portrait-image"
+                  onError={(e) => {
+                    e.currentTarget.src = "/profile.jpeg";
+                  }}
+                />
               </div>
             </motion.div>
+          </div>
+        </div>
+
+        {/* BOTTOM SECTION — Dark-Green Background with Professional Statement */}
+        <div className="hero-editorial-statement-strip">
+          <div className="hero-editorial-statement-container">
+            <p className="hero-editorial-statement-text">
+              Focused on engineering scalable architectures, crafting clean web interfaces, and building intelligent software solutions with code and AI.
+            </p>
           </div>
         </div>
       </section>
@@ -140,14 +100,14 @@ function Portfolio() {
       {/* OVERVIEW / ABOUT SECTION */}
       <Overview />
 
-      {/* WORK EXPERIENCE */}
-      <Experience />
+      {/* TECHNICAL SKILLS */}
+      <Skills />
 
       {/* FEATURED PROJECTS */}
       <Projects />
 
-      {/* TECHNICAL SKILLS */}
-      <Skills />
+      {/* WORK EXPERIENCE */}
+      <Experience />
 
       {/* EDUCATION */}
       <Education />
@@ -171,18 +131,18 @@ function App() {
         {/* Public portfolio */}
         <Route path="/" element={<Portfolio />} />
 
-        {/* Support direct /overview route as well */}
+        {/* Direct /overview anchor route */}
         <Route path="/overview" element={<Portfolio />} />
 
         {/* Admin login */}
         <Route path="/admin/login" element={<AdminLogin />} />
 
-        {/* Protected admin pages */}
+        {/* Protected admin dashboard */}
         <Route element={<ProtectedRoute />}>
           <Route path="/admin/dashboard" element={<AdminDashboard />} />
         </Route>
 
-        {/* Redirect unknown routes */}
+        {/* Unknown route redirect */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

@@ -10,4 +10,6 @@ import java.util.Optional;
 public interface MongoSkillRepository extends MongoRepository<SkillDocument, String> {
 
     Optional<SkillDocument> findByName(String name);
+
+    Optional<SkillDocument> findByNameIgnoreCase(String name);
 }

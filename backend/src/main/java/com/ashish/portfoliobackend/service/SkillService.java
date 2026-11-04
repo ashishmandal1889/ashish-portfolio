@@ -12,4 +12,6 @@ public interface SkillService {
     SkillDto update(String id, SkillDto dto);
 
     void delete(String id);
+
+    void initDefaultSkills();
 }

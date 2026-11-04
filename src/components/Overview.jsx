@@ -2,39 +2,32 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { apiUrl } from "../config/api";
 
-const defaultOverview = {
-  heading: "About & Overview",
-  role: "Full Stack Developer & AI/ML Enthusiast",
+const defaultAbout = {
+  heading: "About Me",
+  subtitle: "A little about my background, interests, and what I am working towards.",
   intro:
-    "I am Ashish Kumar, a Computer Science undergraduate graduating in 2027 with a strong passion for building robust full-stack web platforms and intelligent AI/ML solutions. I combine scalable backend architecture with clean, modern user interfaces to create practical, production-ready software.",
-  interests: [
-    "AI/ML & Generative AI (LLMs, Agentic AI, RAG Systems)",
-    "Cloud Architecture & Automation (AWS VPC, EC2, S3, IAM)",
-    "High-Performance Backend Engineering (Spring Boot, FastAPI, Node.js)",
-    "Distributed Databases & Data Pipelines (PostgreSQL, MongoDB)",
-  ],
+    "I am a Computer Science Engineering undergraduate interested in software engineering, full-stack development, and Artificial Intelligence. I enjoy building practical applications and learning technologies that solve real-world problems.",
   goals:
-    "My objective is to engineer resilient, high-throughput cloud backends and production AI systems that deliver tangible real-world impact. I continuously strive to master distributed systems design, observability, and modern DevOps methodologies.",
+    "To grow as a Software Engineer or AI/ML Engineer by building reliable applications and improving my technical skills.",
+  interests:
+    "Full-stack development, backend engineering, Machine Learning, Generative AI, and cloud technologies.",
   technologies: [
-    "Python",
     "Java",
-    "Spring Boot",
-    "React",
+    "Python",
     "JavaScript",
-    "AWS",
-    "Docker",
-    "PostgreSQL",
+    "React",
+    "Node.js",
+    "SQL",
     "MongoDB",
     "FastAPI",
-    "Node.js",
-    "Git & GitHub",
-    "Linux",
-    "Bash",
+    "Scikit-learn",
+    "AWS",
+    "Docker",
   ],
 };
 
 function Overview() {
-  const [data, setData] = useState(defaultOverview);
+  const [data, setData] = useState(defaultAbout);
 
   useEffect(() => {
     fetch(apiUrl("/api/about"))
@@ -53,115 +46,105 @@ function Overview() {
         }
       })
       .catch((err) => {
-        console.warn("Using default rich overview content:", err.message);
+        console.warn("Using default verified about content:", err.message);
       });
   }, []);
 
   return (
-    <section id="overview" className="overview-section">
-      {/* Invisible anchor for backward compatibility with #about */}
+    <section id="about" className="overview-section">
+      {/* Anchor for backward compatibility with #overview */}
       <span
-        id="about"
+        id="overview"
         style={{ display: "block", position: "relative", top: "-84px", visibility: "hidden" }}
       />
 
       <div className="section-container">
-        {/* Header */}
-        <div className="section-header section-header--center">
-          <motion.p
-            className="section-eyebrow"
-            initial={{ opacity: 0, y: 15 }}
+        {/* Section Header */}
+        <div className="editorial-section-header">
+          <motion.span
+            className="editorial-section-label"
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            <span className="dot" />
-            Overview &amp; Profile
-          </motion.p>
+            BACKGROUND &amp; ASPIRATIONS
+          </motion.span>
 
           <motion.h2
-            className="section-heading"
-            initial={{ opacity: 0, y: 20 }}
+            className="editorial-section-heading"
+            initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            Who I Am <span>&amp; What I Build</span>
+            About Me
           </motion.h2>
 
           <motion.p
-            className="section-description"
-            initial={{ opacity: 0, y: 15 }}
+            className="editorial-section-desc"
+            initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
           >
-            A comprehensive look at my background, technical focus, and development philosophy.
+            A little about my background, interests, and what I am working towards.
           </motion.p>
         </div>
 
-        {/* Editorial Bento / Grid */}
+        {/* Editorial Grid: Intro (Full), Goals & Interests (Side by Side), Key Tech (Full) */}
         <div className="overview-editorial-grid">
-          {/* Card 1: Professional Introduction */}
+          {/* Card 1: Introduction (Full Width, #FFFFFF) */}
           <motion.div
-            className="overview-card overview-card--lead"
-            initial={{ opacity: 0, y: 25 }}
+            className="overview-card overview-card--intro"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="overview-card-tag">Introduction</span>
-            <h3 className="overview-card-title">{data.role}</h3>
-            <p className="overview-card-body" style={{ fontSize: "1.1rem" }}>
+            <span className="overview-card-tag">About Me</span>
+            <h3 className="overview-card-title">Introduction</h3>
+            <p className="overview-card-body" style={{ fontSize: "1.06rem", lineHeight: "1.75" }}>
               {data.intro}
             </p>
           </motion.div>
 
-          {/* Card 2: Professional Goals */}
+          {/* Card 2: Professional Goals (Left, #C5D0C5) */}
           <motion.div
-            className="overview-card overview-card--col-6"
-            initial={{ opacity: 0, y: 25 }}
+            className="overview-card overview-card--goals"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: 0.1 }}
           >
-            <span className="overview-card-tag">Professional Goals</span>
-            <h3 className="overview-card-title">Engineering Reliable Impact</h3>
+            <span className="overview-card-tag">Aspirations</span>
+            <h3 className="overview-card-title">Professional Goals</h3>
             <p className="overview-card-body">{data.goals}</p>
           </motion.div>
 
-          {/* Card 3: Technical Interests */}
+          {/* Card 3: Technical Interests (Right, #E9ECE7) */}
           <motion.div
-            className="overview-card overview-card--col-6"
-            initial={{ opacity: 0, y: 25 }}
+            className="overview-card overview-card--interests"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            <span className="overview-card-tag">Technical Interests</span>
-            <h3 className="overview-card-title">Core Disciplines</h3>
-            <ul style={{ margin: "10px 0 0", paddingLeft: "18px", color: "var(--text-muted)", lineHeight: "1.7" }}>
-              {data.interests.map((item, idx) => (
-                <li key={idx} style={{ marginBottom: "6px" }}>
-                  {item}
-                </li>
-              ))}
-            </ul>
+            <span className="overview-card-tag">Focus Areas</span>
+            <h3 className="overview-card-title">Technical Interests</h3>
+            <p className="overview-card-body">{data.interests}</p>
           </motion.div>
 
-          {/* Card 4: Key Technologies */}
+          {/* Card 4: Key Technologies (Full Width, #FFFFFF) */}
           <motion.div
-            className="overview-card overview-card--col-12"
-            initial={{ opacity: 0, y: 25 }}
+            className="overview-card overview-card--tech"
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <span className="overview-card-tag">Key Technologies</span>
-            <h3 className="overview-card-title">Core Stack &amp; Development Tools</h3>
-            <p className="overview-card-body" style={{ fontSize: "0.95rem" }}>
-              Languages, frameworks, databases, and cloud platforms I actively leverage in production projects:
-            </p>
+            <span className="overview-card-tag">Technical Stack</span>
+            <h3 className="overview-card-title">Key Technologies</h3>
             <div className="tech-pill-grid">
               {data.technologies.map((tech) => (
                 <span key={tech} className="tech-pill">

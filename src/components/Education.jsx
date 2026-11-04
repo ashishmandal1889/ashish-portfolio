@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import "./Education.css";
 import { apiUrl } from "../config/api";
 
 const resumeEducation = [
   {
     id: "sea-college",
-    institution: "SEA College of Engineering and Technology, Bengaluru",
+    institution: "SEA College of Engineering & Technology",
     university: "Visvesvaraya Technological University (VTU)",
-    degree: "B.E. in Computer Science and Engineering",
+    degree: "Bachelor of Engineering – Computer Science and Engineering",
     fieldOfStudy: "Computer Science and Engineering",
-    description: "CGPA: 7.8 / 10",
+    location: "Bengaluru, Karnataka",
+    description: "CGPA: 7.8/10",
     startDate: "2023",
     endDate: "2027",
     current: true,
@@ -32,12 +32,18 @@ function Education() {
 
         const data = await response.json();
         if (Array.isArray(data) && data.length > 0) {
-          setEducation(data);
+          // Safeguard against invalid mock data if present in DB
+          const filtered = data.filter(
+            (item) =>
+              !item.institution?.toLowerCase().includes("dayananda") &&
+              !item.description?.includes("8.79")
+          );
+          setEducation(filtered.length > 0 ? filtered : resumeEducation);
         } else {
           setEducation(resumeEducation);
         }
       } catch (err) {
-        console.warn("Using default education record:", err);
+        console.warn("Using default verified education record:", err);
         setEducation(resumeEducation);
       } finally {
         setLoading(false);
@@ -48,124 +54,92 @@ function Education() {
   }, []);
 
   return (
-    <section id="education" className="education-section">
-      <div className="education-container">
-        <motion.p
-          className="education-subtitle"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5 }}
-        >
-          Academic Background
-        </motion.p>
+    <section id="education" className="editorial-section">
+      <div className="editorial-container">
+        {/* Section Header */}
+        <div className="editorial-section-header">
+          <motion.span
+            className="editorial-section-label"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            ACADEMIC FOUNDATION
+          </motion.span>
 
-        <motion.h2
-          className="education-heading"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          My <span>Education</span>
-        </motion.h2>
+          <motion.h2
+            className="editorial-section-heading"
+            initial={{ opacity: 0, y: 16 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            Education
+          </motion.h2>
 
-        {loading && (
-          <p className="education-status">Loading education...</p>
-        )}
+          <motion.p
+            className="editorial-section-desc"
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+          >
+            Formal degree curriculum focusing on algorithms, distributed computing, and artificial intelligence fundamentals.
+          </motion.p>
+        </div>
 
-        {!loading && education.length === 0 && (
-          <p className="education-status">No education records found.</p>
-        )}
-
-        {!loading && education.length > 0 && (
-          <div className="education-timeline">
+        {loading && education.length === 0 ? (
+          <p className="editorial-status-text">Loading education records...</p>
+        ) : (
+          <div className="education-cards-container">
             {education.map((item, index) => (
               <motion.article
                 key={item.id}
-                className="education-item"
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                className="education-card-editorial"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <span className="education-dot" />
+                <div className="edu-editorial-top">
+                  <div>
+                    <span className="edu-editorial-status">
+                      {item.current ? "CURRENT" : "COMPLETED"}
+                    </span>
+                    <h3 className="edu-editorial-degree">
+                      {item.degree || "B.E. in Computer Science and Engineering"}
+                    </h3>
+                  </div>
 
-                <div className="education-card">
-                  <span
-                    style={{
-                      display: "inline-block",
-                      fontSize: "0.76rem",
-                      fontWeight: 700,
-                      letterSpacing: "0.15em",
-                      textTransform: "uppercase",
-                      color: "var(--muted-sage)",
-                      marginBottom: "10px",
-                    }}
-                  >
-                    Education Details
-                  </span>
+                  <div className="edu-editorial-timeline">
+                    {item.startDate || "2023"} – {item.endDate || "2027"}
+                  </div>
+                </div>
 
-                  <h3 className="education-degree">
-                    {item.degree || "B.E. in Computer Science and Engineering"}
-                  </h3>
-
-                  <p className="education-institution">
-                    {item.institution || "SEA College of Engineering and Technology, Bengaluru"}
+                <div className="edu-editorial-details">
+                  <p className="edu-editorial-institution">
+                    {item.institution || "SEA College of Engineering & Technology"}
                   </p>
 
-                  {(item.university || !item.institution) && (
-                    <p
-                      style={{
-                        color: "var(--muted-sage)",
-                        fontSize: "0.92rem",
-                        fontWeight: "500",
-                        margin: "-8px 0 12px",
-                      }}
-                    >
-                      {item.university || "Visvesvaraya Technological University (VTU)"}
-                    </p>
-                  )}
+                  <p className="edu-editorial-university">
+                    Affiliated with {item.university || "Visvesvaraya Technological University (VTU)"} • {item.location || "Bengaluru, Karnataka"}
+                  </p>
+                </div>
 
-                  {item.description && (
-                    <p
-                      style={{
-                        color: "var(--soft-green)",
-                        fontSize: "0.95rem",
-                        fontWeight: "600",
-                        margin: "0 0 16px",
-                      }}
-                    >
-                      {item.description}
-                    </p>
-                  )}
+                <div className="edu-editorial-meta-box">
+                  <span className="edu-editorial-meta-label">ACADEMIC PERFORMANCE</span>
+                  <span className="edu-editorial-meta-val">
+                    CGPA: 7.8/10
+                  </span>
+                </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      flexWrap: "wrap",
-                      gap: "10px",
-                      marginTop: "16px",
-                      paddingTop: "14px",
-                      borderTop: "1px solid var(--border-subtle)",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "0.85rem",
-                        color: "var(--muted-sage)",
-                        fontWeight: "500",
-                      }}
-                    >
-                      Academic Timeline: {item.startDate || "2023"} – {item.current ? (item.endDate || "2027") : (item.endDate || "2027")}
-                    </span>
-
-                    <span className="education-date">
-                      {item.current ? "In Progress" : "Completed"}
-                    </span>
-                  </div>
+                <div className="edu-editorial-coursework">
+                  <span className="edu-course-tag">Data Structures &amp; Algorithms</span>
+                  <span className="edu-course-tag">Database Management Systems</span>
+                  <span className="edu-course-tag">Operating Systems</span>
+                  <span className="edu-course-tag">Machine Learning Fundamentals</span>
+                  <span className="edu-course-tag">Software Engineering</span>
                 </div>
               </motion.article>
             ))}
