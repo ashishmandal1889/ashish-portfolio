@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { ExternalLink, ShieldCheck, Sparkles, Cloud, Video, Compass } from "lucide-react";
-import { GithubIcon } from "./Icons";
 import { apiUrl } from "../config/api";
 
 const resumeProjects = [
   {
     id: "sentinelsos",
     title: "SentinelSOS",
-    subtitle: "AI-Powered Women Safety System",
+    tagline: "AI-Powered Women Safety System",
+    category: "AI & Safety System",
+    type: "ai-ml",
+    year: "2026",
     description:
       "A safety application concept with emergency SOS, location tracking, voice-based alerts, and ML-based area risk estimation.",
-    technologies: "Python, FastAPI, PostgreSQL, Scikit-learn, React",
+    technologies: ["Python", "FastAPI", "PostgreSQL", "Scikit-learn", "React"],
     githubUrl: "https://github.com/ashishmandal1889/Sentinel_SOS",
     liveUrl: "",
     status: "In Development",
@@ -19,67 +19,62 @@ const resumeProjects = [
   {
     id: "mindflow-ai",
     title: "MindFlow AI",
-    subtitle: "AI-Powered Reflection & Personal Growth Platform",
+    tagline: "AI-Powered Reflection & Personal Growth Platform",
+    category: "Full-Stack AI Application",
+    type: "ai-ml",
+    year: "2026",
     description:
-      "An application designed to support personal reflection and growth using AI-powered features.",
-    technologies: "Node.js, Express.js, Firebase Authentication, Firestore, Gemini API, Docker",
+      "An application designed to support personal reflection and growth using AI-powered features with Gemini API.",
+    technologies: ["Node.js", "Express.js", "Firebase Auth", "Firestore", "Gemini API", "Docker"],
     githubUrl: "https://github.com/ashishmandal1889/mindflow-ai",
     liveUrl: "https://mindflow-ai-9fho.onrender.com",
-    status: "",
+    status: "Deployed",
   },
   {
     id: "wanderlust",
     title: "Wanderlust",
-    subtitle: "Full-Stack Travel & Property Listing Application",
+    tagline: "Full-Stack Travel & Property Listing Application",
+    category: "Web Application",
+    type: "full-stack",
+    year: "2025",
     description:
-      "An Airbnb-style application for exploring and managing property listings.",
-    technologies: "JavaScript, Node.js, Express.js, MongoDB",
+      "An Airbnb-style application for exploring and managing property listings with reviews and secure auth.",
+    technologies: ["JavaScript", "Node.js", "Express.js", "MongoDB"],
     githubUrl: "https://github.com/ashishmandal1889/wanderlust",
     liveUrl: "https://wanderlust-1-ph3e.onrender.com/",
-    status: "",
+    status: "Deployed",
   },
   {
     id: "narrivox-ai",
     title: "Narrivox AI",
-    subtitle: "AI-Powered YouTube Script Generator",
+    tagline: "AI-Powered YouTube Script Generator",
+    category: "AI Content Platform",
+    type: "ai-ml",
+    year: "2026",
     description:
-      "An AI application that helps generate YouTube video scripts.",
-    technologies: "JavaScript, AI API Integration, Web Development",
+      "An AI application that helps generate structured, topic-relevant YouTube video scripts via generative AI.",
+    technologies: ["JavaScript", "AI Integration", "Web Development"],
     githubUrl: "https://github.com/ashishmandal1889/narrivox-ai",
     liveUrl: "https://narrivox-ai.vercel.app/",
-    status: "",
+    status: "Deployed",
   },
   {
     id: "aws-cloud-infra",
     title: "AWS Cloud Infrastructure & Monitoring Automation",
-    subtitle: "Cloud Infrastructure & Systems Deployment",
+    tagline: "Cloud Infrastructure & Systems Deployment",
+    category: "Cloud & DevOps",
+    type: "cloud-devops",
+    year: "2026",
     description:
-      "Configured AWS infrastructure, monitoring, alerting, automated log archiving, and backups.",
-    technologies: "AWS, EC2, VPC, S3, IAM, CloudWatch, SNS, Linux, Python, Bash",
+      "Configured high-availability AWS infrastructure, EC2, VPC, S3, IAM, CloudWatch monitoring, SNS alerting, automated log archiving, and backups.",
+    technologies: ["AWS", "EC2", "VPC", "S3", "IAM", "CloudWatch", "SNS", "Linux", "Python", "Bash"],
     githubUrl: "https://github.com/ashishmandal1889/aws-cloud-infrastructure-project",
     liveUrl: "http://ashish-aws-project.duckdns.org/",
-    status: "",
+    status: "Operational",
   },
 ];
 
-function getProjectIcon(id) {
-  switch (id) {
-    case "sentinelsos":
-      return ShieldCheck;
-    case "mindflow-ai":
-      return Sparkles;
-    case "aws-cloud-infra":
-      return Cloud;
-    case "narrivox-ai":
-      return Video;
-    case "wanderlust":
-      return Compass;
-    default:
-      return Sparkles;
-  }
-}
-
-function Projects() {
+export default function Projects() {
   const [projects, setProjects] = useState(resumeProjects);
 
   useEffect(() => {
@@ -96,16 +91,23 @@ function Projects() {
               (m) => m.title?.toLowerCase() === apiProj.title?.toLowerCase()
             );
             if (!exists) {
+              const techs = (apiProj.technologies || "")
+                .split(",")
+                .map((t) => t.trim())
+                .filter((t) => t && !t.toLowerCase().includes("spring boot"));
+
               merged.push({
-                id: apiProj.id || String(Math.random()),
+                id: apiProj.id ? String(apiProj.id) : `proj-${Math.random()}`,
                 title: apiProj.title,
+                tagline: apiProj.title,
+                category: "Engineering Project",
+                type: "full-stack",
+                year: "2026",
                 description: apiProj.description,
-                contribution: apiProj.description,
-                technologies: apiProj.technologies || "",
+                technologies: techs.length > 0 ? techs : ["Full-Stack"],
                 githubUrl: apiProj.githubUrl || "",
                 liveUrl: apiProj.liveUrl || "",
-                category: "Engineering Project",
-                tagline: "Full-Stack Engineering Project",
+                status: "Completed",
               });
             }
           });
@@ -113,137 +115,88 @@ function Projects() {
         }
       })
       .catch((err) => {
-        console.warn("Using default verified projects list:", err.message);
+        console.warn("Using default projects list:", err.message);
       });
   }, []);
 
   return (
-    <section id="projects" className="projects-section">
-      <div className="section-container">
-        {/* Section Header */}
-        <div className="editorial-section-header">
-          <motion.span
-            className="editorial-section-label"
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            SELECTED WORK
-          </motion.span>
-
-          <motion.h2
-            className="editorial-section-heading"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            Featured Projects
-          </motion.h2>
-
-          <motion.p
-            className="editorial-section-desc"
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-          >
-            Production web platforms, applied AI applications, and automated cloud infrastructure engineered with rigorous technical standards.
-          </motion.p>
+    <section id="projects" className="section work">
+      <div className="wrap">
+        <div className="section__head">
+          <p className="eyebrow">03 / SELECTED WORK</p>
+          <h2>Featured Projects</h2>
+          <p className="work__subtitle">
+            All 5 core engineering projects built across full-stack development, applied AI, and cloud systems.
+          </p>
         </div>
 
-        {/* Responsive Projects Grid */}
-        <div className="projects-editorial-grid">
-          {projects.map((project, index) => {
-            const ProjectIcon = getProjectIcon(project.id);
-            const techList = (project.technologies || "")
-              .split(",")
-              .map((t) => t.trim())
-              .filter(Boolean);
-
+        <div className="cases">
+          {projects.map((proj, idx) => {
+            const indexStr = String(idx + 1).padStart(2, "0");
             return (
-              <motion.article
-                key={project.id}
-                className="project-card-premium"
-                initial={{ opacity: 0, y: 25 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
-                transition={{ duration: 0.5, delay: index * 0.08 }}
+              <article
+                key={proj.id}
+                id={`project-${proj.id}`}
+                className="case"
               >
-                {/* Visual Header Banner */}
-                <div className="project-banner">
-                  <div className="project-banner-content">
-                    <span className="project-number">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <div className="project-icon-badge">
-                      <ProjectIcon size={20} className="proj-banner-icon" />
+                <div className="case__shot">
+                  <div className="case__shot-inner">
+                    <div className="case__shot-chrome">
+                      <span className="case__shot-dot" />
+                      <span className="case__shot-dot" />
+                      <span className="case__shot-dot" />
+                      <span className="case__shot-title">{proj.title}</span>
                     </div>
-                    {project.status ? (
-                      <span className="project-status-pill">
-                        {project.status}
-                      </span>
-                    ) : (
-                      <span className="project-category-pill">
-                        Featured
-                      </span>
-                    )}
+                    <div className="case__shot-view">
+                      <div className="case__shot-accent-box">
+                        <div className="case__meta-row">
+                          <p className="case__no">
+                            {indexStr} / {proj.year} · {proj.category}
+                          </p>
+                          {proj.status && (
+                            <span className="case__status-pill">{proj.status}</span>
+                          )}
+                        </div>
+
+                        <h3 className="case__title">{proj.title}</h3>
+                        <p className="case__tag">{proj.tagline}</p>
+                        <p className="case__lede">{proj.description}</p>
+
+                        <div className="s-chips">
+                          {proj.technologies.map((tech) => (
+                            <span key={tech} className="s-chip">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+
+                        <div className="case__actions">
+                          {proj.githubUrl && (
+                            <a
+                              href={proj.githubUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="case__go"
+                            >
+                              GitHub Code
+                            </a>
+                          )}
+                          {proj.liveUrl && (
+                            <a
+                              href={proj.liveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="case__go case__go--live"
+                            >
+                              Live Demo
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                {/* Project Body */}
-                <div className="project-card-inner">
-                  {project.subtitle && (
-                    <p className="project-subtitle-tag">{project.subtitle}</p>
-                  )}
-                  <h3 className="project-title">{project.title}</h3>
-                  <p className="project-desc">{project.description}</p>
-
-                  {project.contribution && (
-                    <div className="project-contribution-box">
-                      <span className="project-contribution-label">Key Contribution:</span>
-                      <p className="project-contribution-text">{project.contribution}</p>
-                    </div>
-                  )}
-
-                  {/* Tech Pills */}
-                  <div className="project-tech-tags">
-                    {techList.map((tech) => (
-                      <span key={tech} className="project-tech-pill">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Action Buttons */}
-                  <div className="project-footer-actions">
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-editorial-primary btn--sm"
-                      >
-                        <ExternalLink size={14} style={{ marginRight: "6px" }} />
-                        Live Demo
-                      </a>
-                    )}
-
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn-editorial-secondary btn--sm"
-                      >
-                        <GithubIcon size={14} style={{ marginRight: "6px" }} />
-                        Repository
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </motion.article>
+              </article>
             );
           })}
         </div>
@@ -251,5 +204,3 @@ function Projects() {
     </section>
   );
 }
-
-export default Projects;

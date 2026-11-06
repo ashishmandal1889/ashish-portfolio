@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import { apiUrl } from "../config/api";
 
-const API_URL = apiUrl("/api/contact");
 const resumeContact = {
   email: "ashishmandal1889@gmail.com",
   location: "Bengaluru, Karnataka, India",
@@ -11,17 +9,17 @@ const resumeContact = {
   leetCode: "https://leetcode.com/u/ashishmandal1889/",
 };
 
-function Contact() {
+export default function Contact() {
   const [contact, setContact] = useState(resumeContact);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    async function fetchContact() {
-      try {
-        const response = await fetch(API_URL);
-        if (!response.ok) {
-          throw new Error("Failed to load contact information");
-        }
-        const data = await response.json();
+    fetch(apiUrl("/api/contact"))
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load contact info");
+        return res.json();
+      })
+      .then((data) => {
         const item = Array.isArray(data) ? data[0] ?? resumeContact : data ?? resumeContact;
         setContact({
           email: item.email || resumeContact.email,
@@ -30,159 +28,91 @@ function Contact() {
           linkedIn: item.linkedIn || resumeContact.linkedIn,
           leetCode: item.leetCode || resumeContact.leetCode,
         });
-      } catch (error) {
-        console.warn("Using default verified contact information:", error.message);
-        setContact(resumeContact);
-      }
-    }
-
-    fetchContact();
+      })
+      .catch((err) => {
+        console.warn("Using default verified contact:", err.message);
+      });
   }, []);
 
-  const email = contact?.email || "ashishmandal1889@gmail.com";
-  const github = contact?.github || "https://github.com/ashishmandal1889";
-  const linkedIn = contact?.linkedIn || "https://www.linkedin.com/in/ashish-kumar-a802192a0/";
-  const leetCode = contact?.leetCode || "https://leetcode.com/u/ashishmandal1889/";
-  const location = contact?.location || "Bengaluru, Karnataka, India";
+  const handleCopyEmail = (e) => {
+    e.preventDefault();
+    navigator.clipboard.writeText(contact.email);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2200);
+  };
 
   return (
-    <section id="contact" className="editorial-section editorial-section--contact">
-      <div className="editorial-container">
-        {/* Section Header */}
-        <div className="editorial-section-header">
-          <motion.span
-            className="editorial-section-label"
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-          >
-            GET IN TOUCH
-          </motion.span>
+    <section id="contact" className="section contact">
+      <div className="wrap closer__inner">
+        <p className="eyebrow">06 / CONTACT</p>
 
-          <motion.h2
-            className="editorial-section-heading"
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            Let&apos;s Connect
-          </motion.h2>
+        <h2 className="closer__heading">
+          <span>Let's build</span>
+          <span>something.</span>
+        </h2>
 
-          <motion.p
-            className="editorial-section-desc"
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+        <p className="closer__text">
+          Open for software engineering roles, internships, and ambitious projects. The fastest way to reach me is email, I answer all of them.
+        </p>
+
+        <div className="closer__mail-wrapper">
+          <a
+            className="closer__mail"
+            href={`mailto:${contact.email}`}
+            title="Click to send email"
           >
-            I&apos;m open to opportunities, collaboration, and conversations about software development and AI.
-          </motion.p>
+            {contact.email}
+          </a>
+
+          <button
+            type="button"
+            className="closer__copy-btn"
+            onClick={handleCopyEmail}
+            aria-label="Copy email address"
+          >
+            {copied ? "Copied to clipboard" : "Copy email"}
+          </button>
         </div>
 
-        {/* Minimalist Contact Card (No Form) */}
-        <motion.div
-          className="editorial-contact-container"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="editorial-contact-card">
-            <div className="editorial-contact-card-header">
-              <h3 className="editorial-contact-subheading">
-                Direct Channels &amp; Profiles
-              </h3>
-              <p className="editorial-contact-subtext">
-                Reach out directly via email or connect through my verified engineering profiles.
-              </p>
-            </div>
+        <div className="closer__links">
+          <a
+            href={contact.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="closer__pill"
+          >
+            GitHub
+          </a>
 
-            <div className="editorial-contact-channels-grid">
-              {/* Email */}
-              <div className="editorial-contact-item">
-                <span className="contact-item-label">EMAIL</span>
-                <a
-                  href={`mailto:${email}`}
-                  className="contact-interactive-link"
-                >
-                  {email}
-                </a>
-              </div>
+          <a
+            href={contact.linkedIn}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="closer__pill"
+          >
+            LinkedIn
+          </a>
 
-              {/* Location */}
-              <div className="editorial-contact-item">
-                <span className="contact-item-label">LOCATION</span>
-                <span className="contact-static-text">
-                  {location}
-                </span>
-              </div>
+          <a
+            href={contact.leetCode}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="closer__pill"
+          >
+            LeetCode
+          </a>
 
-              {/* LinkedIn */}
-              <div className="editorial-contact-item">
-                <span className="contact-item-label">LINKEDIN</span>
-                <a
-                  href={linkedIn}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-interactive-link"
-                >
-                  linkedin.com/in/ashish-kumar-a802192a0
-                </a>
-              </div>
-
-              {/* GitHub */}
-              <div className="editorial-contact-item">
-                <span className="contact-item-label">GITHUB</span>
-                <a
-                  href={github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-interactive-link"
-                >
-                  github.com/ashishmandal1889
-                </a>
-              </div>
-
-              {/* LeetCode */}
-              <div className="editorial-contact-item">
-                <span className="contact-item-label">LEETCODE</span>
-                <a
-                  href={leetCode}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-interactive-link"
-                >
-                  leetcode.com/u/ashishmandal1889
-                </a>
-              </div>
-            </div>
-
-            {/* Resume Button */}
-            <div className="editorial-contact-action-row">
-              <a
-                href={`mailto:${email}`}
-                className="btn-editorial-primary"
-              >
-                Send Email
-              </a>
-
-              <a
-                href="/resume.pdf"
-                download="Ashish_Kumar_Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn-editorial-secondary"
-              >
-                Download Resume
-              </a>
-            </div>
-          </div>
-        </motion.div>
+          <a
+            href="/resume.pdf"
+            download="Ashish_Kumar_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="closer__pill closer__pill--accent"
+          >
+            Download Resume PDF
+          </a>
+        </div>
       </div>
     </section>
   );
 }
-
-export default Contact;

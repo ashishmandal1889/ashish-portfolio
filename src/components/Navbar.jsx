@@ -1,25 +1,21 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
-  { label: "Home", target: "home" },
   { label: "About", target: "about" },
   { label: "Skills", target: "skills" },
   { label: "Projects", target: "projects" },
   { label: "Experience", target: "experience" },
-  { label: "Education", target: "education" },
-  { label: "Certifications", target: "certifications" },
+  { label: "Credentials", target: "credentials" },
   { label: "Contact", target: "contact" },
 ];
 
-function Navbar() {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
+  const [activeSection, setActiveSection] = useState("top");
 
-  // Active section tracking via IntersectionObserver
   useEffect(() => {
-    const sectionIds = navLinks.map((link) => link.target);
-
+    const sectionIds = ["top", "about", "skills", "projects", "experience", "credentials", "contact"];
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -46,102 +42,84 @@ function Navbar() {
     setIsOpen(false);
     setActiveSection(targetId);
 
-    const el =
-      document.getElementById(targetId) ||
-      (targetId === "about" ? document.getElementById("overview") : null);
-
+    const el = document.getElementById(targetId);
     if (el) {
-      el.scrollIntoView({
-        behavior: "smooth",
-      });
+      el.scrollIntoView({ behavior: "smooth" });
     }
   };
 
   return (
-    <header className="editorial-navbar-wrapper">
-      <nav className="editorial-navbar">
-        {/* Left: Branding */}
-        <div
-          className="editorial-nav-brand"
-          onClick={() => handleNavigation("home")}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => e.key === "Enter" && handleNavigation("home")}
-        >
-          ASHISH KUMAR
-        </div>
+    <header className="bar" data-site-bar="true">
+      <a
+        className="mark"
+        aria-label="Top of page"
+        href="#top"
+        onClick={(e) => {
+          e.preventDefault();
+          handleNavigation("top");
+        }}
+      >
+        AK
+      </a>
 
-        {/* Center: Navigation Links */}
-        <div className="editorial-nav-links">
-          {navLinks.map((link) => {
-            const isActive =
-              activeSection === link.target ||
-              (link.target === "about" && activeSection === "overview");
-
-            return (
-              <a
-                key={link.target}
-                href={`#${link.target}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavigation(link.target);
-                }}
-                className={`editorial-nav-link ${isActive ? "active" : ""}`}
-              >
-                {link.label}
-                {isActive && (
-                  <motion.span
-                    layoutId="editorial-nav-underline"
-                    className="editorial-nav-underline"
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-              </a>
-            );
-          })}
-        </div>
-
-        {/* Right: Actions */}
-        <div className="editorial-nav-actions">
-          <a
-            href="/admin/login"
-            className="editorial-nav-admin-link"
-          >
-            Admin
-          </a>
-
-          <a
-            href="/resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="editorial-resume-btn"
-          >
-            Resume
-          </a>
-
-          {/* Mobile Menu Toggle (Clean Text Toggle, No Icons) */}
-          <button
-            type="button"
-            className="editorial-mobile-toggle"
-            onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle navigation menu"
-            aria-expanded={isOpen}
-          >
-            {isOpen ? "Close" : "Menu"}
-          </button>
-        </div>
+      <nav className="bar__nav">
+        {navLinks.map((link) => {
+          const isActive = activeSection === link.target;
+          return (
+            <a
+              key={link.target}
+              href={`#${link.target}`}
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavigation(link.target);
+              }}
+              className={isActive ? "active" : ""}
+            >
+              {link.label}
+            </a>
+          );
+        })}
       </nav>
 
+      <div className="bar__actions">
+        <ThemeToggle />
+
+        <a
+          className="bar__cta"
+          href="/resume.pdf"
+          download="Ashish_Kumar_Resume.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span>Resume</span>
+          <span className="long"> PDF</span>
+        </a>
+
+        <a
+          href="/admin/login"
+          className="bar__admin"
+          title="Admin Access"
+        >
+          Admin
+        </a>
+
+        <button
+          type="button"
+          className={`burger ${isOpen ? "open" : ""}`}
+          aria-expanded={isOpen}
+          aria-label={isOpen ? "Close menu" : "Open menu"}
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+        </button>
+      </div>
+
       {/* Mobile Drawer */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            className="editorial-mobile-drawer"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-          >
+      {isOpen && (
+        <div className="mobile-drawer">
+          <div className="mobile-drawer__links">
             {navLinks.map((link) => (
               <a
                 key={link.target}
@@ -150,35 +128,27 @@ function Navbar() {
                   e.preventDefault();
                   handleNavigation(link.target);
                 }}
-                className="editorial-mobile-link"
+                className={activeSection === link.target ? "active" : ""}
               >
                 {link.label}
               </a>
             ))}
-
-            <div className="editorial-mobile-divider" />
-
-            <a
-              href="/admin/login"
-              onClick={() => setIsOpen(false)}
-              className="editorial-mobile-admin"
-            >
-              Admin Portal
-            </a>
-
+            <div className="mobile-drawer__divider" />
             <a
               href="/resume.pdf"
+              download="Ashish_Kumar_Resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
-              className="editorial-mobile-resume-btn"
+              className="mobile-drawer__resume"
             >
-              Download Resume
+              Download Resume PDF
             </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <a href="/admin/login" className="mobile-drawer__admin">
+              Admin Portal
+            </a>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
-
-export default Navbar;
